@@ -1,0 +1,37 @@
+{{ include('base.html.twig') }}
+
+{% block body %}
+    <a href="{{ path('admin_game_new') }}">New Game</a>
+    <table>
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>name</th>
+            <th>slug</th>
+            <th>description</th>
+            <th>image</th>
+            <th>buy_link</th>
+            <th>link</th>
+            <th>genre</th>
+            <th>mode</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for game in games %}
+            <tr>
+                <td>{{ game.gameId }}</td>
+                <td><a href="{{ path('admin_game_view', {'slug': game.gameSlug}) }}">{{ game.gameName }}</a></td>
+                <td>{{ game.gameSlug }}</td>
+                <td>{{ game.gameDescription }}</td>
+                <td>{{ game.gameImage }}</td>
+                <td>{{ game.gameBuyLink }}</td>
+                <td>{{ game.gameLink }}</td>
+                <td>{{ game.gameGenre }}</td>
+                <td>{{ game.gameMode }}</td>
+                <td><a>Delete</a><a>Edit</a></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
