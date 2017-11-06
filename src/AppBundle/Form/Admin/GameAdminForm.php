@@ -1,7 +1,5 @@
 <?php
-
 namespace AppBundle\Form\Admin;
-
 use AppBundle\Entity\Game;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -27,7 +25,6 @@ class GameAdminForm extends AbstractType
                     'Sport' => 'Sport',
                     'Action' => 'Action'
                 )
-
             ])
             ->add("gameMode",  ChoiceType::class, [
                 'choices' => array(
@@ -37,14 +34,12 @@ class GameAdminForm extends AbstractType
                 )
             ]);
     }
-
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'data_class' => 'AppBundle\Entity\Game'
         ]);
     }
-
     public function getBlockPrefix()
     {
         return 'app_bundle_game_admin_form';

@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Login{% endblock %}
+
+{% block body %}
+    {% if error %}
+        {{ error.messageKey|trans(error.messageData, 'security') }}
+    {% endif %}
+
+    {{ form_start(form) }}
+        {{ form_row(form._username) }}
+        {{ form_row(form._password) }}
+        <button type="submit">Login</button>
+    {{ form_end(form) }}
+    <hr>
+    <a href="{{ url }}">Login with twitch</a>
+{% endblock %}

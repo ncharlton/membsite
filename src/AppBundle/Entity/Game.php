@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -19,7 +20,7 @@ class Game
      * @ORM\Id()
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $game_id;
+    public $game_id;
 
     /**
      * @Assert\NotBlank()
@@ -72,6 +73,11 @@ class Game
      */
     private $game_mode;
 
+    /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\News", mappedBy="game")
+     * @ORM\OrderBy({"created_at" = "DESC"})
+     */
+    private $news;
 
     #
 
@@ -215,5 +221,13 @@ class Game
     public function setGameMode($game_mode)
     {
         $this->game_mode = $game_mode;
+    }
+
+    /**
+     * @return ArrayCollection|News[]
+     */
+    public function getNews()
+    {
+        return $this->news;
     }
 }

@@ -1,0 +1,26 @@
+header.admin-header {
+  background: #171a1d;
+  padding: 15px; }
+  header.admin-header ul li {
+    display: inline;
+    float: left;
+    margin: 0 25px; }
+    header.admin-header ul li a {
+      color: white; }
+
+tag, tag.super-admin, tag.admin, tag.mod {
+  padding: 3px 12px;
+  font-size: 12px;
+  color: white;
+  background: black; }
+
+tag.super-admin {
+  background: purple; }
+
+tag.admin {
+  background: red; }
+
+tag.mod {
+  background: orange; }
+
+/*# sourceMappingURL=admin.css.map */

@@ -1,0 +1,56 @@
+{{ include('admin/base.html.twig') }}
+
+{% block title %}User list{% endblock %}
+
+{% block body %}
+    <table>
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Superior Role</th>
+                <th>Activated</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Roles</th>
+                <th>Type</th>
+                <th>Twitch ID</th>
+                <th>Twitch Sub Plan</th>
+                <th>Created at</th>
+                <th>Updated at</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+                <tr>
+                    <td>{{ user.userId }}
+                    </td>
+                    <td>
+                        {% if user.SuperAdmin() %}
+                            <tag class="super-admin">Super Admin</tag>
+                        {% endif %}
+                        {% if user.admin() %}
+                            <tag class="admin">Admin</tag>
+                        {% endif %}
+                        {% if user.mod() %}
+                            <tag class="mod">Mod</tag>
+                        {% endif %}
+                    </td>
+                    <td>{{ user.activated }}</td>
+                    <td><a href="{{ path("user_admin_view", {'user' : user.username}) }}">{{ user.username }}</a></td>
+                    <td>{{ user.email }}</td>
+                    <td>{% for role in user.roles %}{{ role }} | {% endfor %}</td>
+                    <td>{{ user.type }}</td>
+                    <td>{{ user.tid }}</td>
+                    <td>{{ user.profile.profileSubplan }}</td>
+                    <td>{{ user.createdAt|date("m/d/Y") }}</td>
+                    <td>{{ user.updatedAt|date("m/d/Y") }}</td>
+                    <td>
+                        <a href="{{ path("user_admin_edit", {'user' : user.username}) }}">Edit</a>
+                        <a href="{{ path("user_admin_delete", {'user' : user.username}) }}">Delete</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

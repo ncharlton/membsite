@@ -1,0 +1,38 @@
+header.admin-header {
+  background: #171a1d;
+  padding: 15px;
+
+  & ul {
+    & li {
+      display: inline;
+      float: left;
+      margin: 0 25px;
+
+      & a {
+        color: white;
+      }
+    }
+  }
+}
+
+tag {
+  padding: 3px 12px;
+  font-size: 12px;
+  color: white;
+  background: black;
+}
+
+tag.super-admin {
+  @extend tag;
+  background: purple;
+}
+
+tag.admin {
+  @extend tag;
+  background: red;
+}
+
+tag.mod {
+  @extend tag;
+  background: orange;
+}

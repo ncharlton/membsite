@@ -33,3 +33,15 @@ services:
     # AppBundle\Service\ExampleService:
     #     arguments:
     #         $someArgument: 'some_value'
+
+    AppBundle\Doctrine\HashPasswordListener:
+        tags: [doctrine.event_subscriber]
+
+    AppBundle\Service\TwitchService:
+        arguments:
+            $twitchRedirectUrl: 'http://localhost:8000/'
+            $twitchPublicKey: 'o3nb4qfewluyxokbm1qrg0mx7cpnh2'
+            $twitchPrivateKey: 'd60amswbo3ybxguj4mzkbvv5jed5hi'
+            $twitchChannelId: '2400710'
+
+    AppBundle\Security\TwitchAuthenticator:

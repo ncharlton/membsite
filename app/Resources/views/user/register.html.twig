@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Register{% endblock %}
+
+{% block body %}
+    {{ form_start(form) }}
+        {{ form_row(form.username) }}
+        {{ form_row(form.email) }}
+        {{ form_row(form.plainPassword.first, {
+            'label' : 'Password'
+        }) }}
+        {{ form_row(form.plainPassword.second, {
+            'label' : 'Repeat Password'
+        }) }}
+
+        <button type="submit" formnovalidate>Register</button>
+    {{ form_end(form) }}
+{% endblock %}

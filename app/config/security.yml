@@ -2,10 +2,21 @@
 # https://symfony.com/doc/current/security.html
 security:
 
+    encoders:
+        AppBundle\Entity\User: bcrypt
+
+    role_hierarchy:
+        ROLE_SUPER_ADMIN: [ROLE_ADMIN]
+        ROLE_ADMIN: [ROLE_MOD]
+        ROLE_MOD: [ROLE_USER]
+
     # https://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
     providers:
-        in_memory:
-            memory: ~
+        users:
+            entity: { class: AppBundle\Entity\User, property: username }
+
+        twitch_users:
+            id: AppBundle\Security\TwitchUserProvider
 
 
 
@@ -17,7 +28,15 @@ security:
 
         main:
             anonymous: ~
+            guard:
+                authenticators:
+                    - AppBundle\Security\LoginFormAuthenticator
+            simple_preauth:
+                authenticator: AppBundle\Security\TwitchAuthenticator
+            provider: twitch_users
 
+            logout:
+                path: /logout
 
-
-
+    access_control:
+        - { path: ^/admin, roles: ROLE_ADMIN }

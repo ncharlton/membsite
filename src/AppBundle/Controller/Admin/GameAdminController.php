@@ -64,7 +64,7 @@ class GameAdminController extends Controller
      * @Route("/{slug}", name="admin_game_view")
      * @ParamConverter("game", options={"mapping" : {"slug":"game_slug"}})
      */
-    public function showAction(Game $game)
+    public function viewAction(Game $game)
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -111,11 +111,17 @@ class GameAdminController extends Controller
     }
 
     /**
-     * @Route("/{game}/delete")
+     * @Route("/{slug}/delete", name="admin_game_delete")
+     * @ParamConverter("game", options={"mapping" : {"slug":"game_slug"}})
      */
-    public function deleteAction($game)
+    public function deleteAction(Game $game)
     {
+        $em = $this->getDoctrine()->getManager();
 
+        $em->remove($game);
+        $em->flush();
+
+        return $this->redirectToRoute('admin_game_index');
     }
 
 }

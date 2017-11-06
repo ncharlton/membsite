@@ -1,4 +1,4 @@
-{{ include('base.html.twig') }}
+{{ include('admin/base.html.twig') }}
 
 {% block body %}
     <a href="{{ path('admin_game_new') }}">New Game</a>
@@ -29,7 +29,10 @@
                 <td>{{ game.gameLink }}</td>
                 <td>{{ game.gameGenre }}</td>
                 <td>{{ game.gameMode }}</td>
-                <td><a>Delete</a><a>Edit</a></td>
+                <td>
+                    <a href="{{ path('admin_game_edit', {'slug': game.gameSlug}) }}">Edit</a>
+                    <a href="{{ path('admin_game_delete', {'slug': game.gameSlug}) }}">Delete</a>
+                </td>
             </tr>
         {% endfor %}
         </tbody>

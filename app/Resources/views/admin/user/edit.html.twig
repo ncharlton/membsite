@@ -1,0 +1,16 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}User view: {{ user.username }}{% endblock %}
+
+{% block body %}
+    {{ user.username }} <br>
+    {{ user.email }}
+
+    <br>
+    {{ form_start(form) }}
+        {{ form_row(form.username) }}
+        {{ form_row(form.email) }}
+
+        <button type="submit">Edit</button>
+    {{ form_end(form) }}
+{% endblock %}

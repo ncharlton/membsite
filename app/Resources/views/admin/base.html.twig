@@ -2,19 +2,37 @@
 <html>
     <head>
         <meta charset="UTF-8" />
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
+        <title>{% block title %}{% endblock %}</title>
+
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+
+        {% block stylesheets %}
+            <link rel="stylesheet" type="text/css" href="{{ asset('css/bootstrap/bootstrap.min.css') }}">
+            <link rel="stylesheet" type="text/css" href="{{ asset('css/admin.css') }}">
+        {% endblock %}
     </head>
     <body>
-        {% for msg in app.session.flashBag.get('success') %}
+        {% block header %}
+            <header class="container-fluid admin-header">
+                <ul>
+                    <li><a href="{{ path('main_index') }}">Frontpage</a></li>
+                    <li><a href="{{ path('user_admin_index') }}">Users</a></li>
+                    <li><a href="{{ path('admin_game_index') }}">Games</a></li>
+                    <li><a href="{{ path('security_logout') }}">Logout</a> </li>
+                </ul>
+            </header>
+        {% endblock %}
+
+        {% for msg in app.flashes('success') %}
             <p>{{ msg }}</p>
         {% endfor %}
-        {% for msg in app.session.flashBag.get('error') %}
+        {% for msg in app.flashes('error') %}
             <p>{{ msg }}</p>
         {% endfor %}
 
         {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
+        {% block javascripts %}
+            <script type="text/javascript" src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
+        {% endblock %}
     </body>
 </html>
