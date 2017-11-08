@@ -2,7 +2,9 @@
 
 namespace AppBundle\Form\Admin;
 
+use AppBundle\Entity\Game;
 use AppBundle\Entity\News;
+use Ivory\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -17,10 +19,15 @@ class NewsAdminForm extends AbstractType
         $builder
             ->add("newsTitle", TextType::class)
             ->add("newsKeywords", TextType::class)
-            ->add("newsContent", TextareaType::class)
+            ->add("newsContent", CKEditorType::class, [
+                "config" => [
+                    "toolbar" => "basic"
+                ]
+            ])
             ->add("game", EntityType::class, [
                 "placeholder" => "Please choose a game",
-                "class" => News::class
+                "class" => Game::class,
+                "choice_label" => "game_name"
             ]);
     }
 

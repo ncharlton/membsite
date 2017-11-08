@@ -1,0 +1,15 @@
+{% extends "admin/base.html.twig" %}
+
+{% block title %}test{% endblock %}
+
+{% block body %}
+    <a href="{{ path('admin_news_index') }}">Index</a>
+    <hr>
+    <h1>{{ news.newsTitle }}</h1>
+    <br>
+    {{ news.newsSlug }}
+    <br>
+    {{ news.newsKeywords }}
+    <br>
+    {{ news.newsContent | raw }}
+{% endblock %}

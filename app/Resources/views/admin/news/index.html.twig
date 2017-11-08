@@ -1,0 +1,59 @@
+{% extends "admin/base.html.twig" %}
+
+{% block title %}All news{% endblock %}
+
+{% block body %}
+    <a href="{{ path('admin_news_new') }}">New News</a>
+    <hr>
+    <table>
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>News Title</th>
+                <th>News keywords</th>
+                <th>Game</th>
+                <th>Author</th>
+                <th>Created At</th>
+                <th>Updated at</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for news in allnews %}
+                <tr>
+                    <td>{{ news.newsId }}</td>
+                    <td>
+                        <a href="{{ path('admin_news_view', {'slug' : news.newsSlug}) }}">
+                            {{ news.newsTitle }}
+                        </a>
+                    </td>
+                    <td>{{ news.newsKeywords }}</td>
+                    <td>
+                        <b>
+                            <a href="{{ path('admin_game_view', {'slug' : news.game.gameSlug}) }}">
+                                {{ news.game.gameName }}
+                            </a>
+                        </b>
+                    </td>
+                    <td>
+                        <b>
+                            <a href="{{ path('admin_user_view', {'user' : news.author.username}) }}">
+                                {{ news.author.username }}
+                            </a>
+                        </b>
+                    </td>
+                    <td>{{ news.createdAt | date("d/m/Y") }}</td>
+                    <td>{{ news.updatedAt | date("d/m/Y") }}</td>
+                    <td>
+                        <a href="{{ path('admin_news_delete', {'slug' : news.newsSlug}) }}">
+                            Delete
+                        </a>
+                        <a href="{{ path('admin_news_edit', {'slug' : news.newsSlug}) }}">
+                            Edit
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

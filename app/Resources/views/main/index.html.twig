@@ -6,4 +6,12 @@
 {% if app.user %}
     {{ app.user.username }}
 {% endif %}
+
+{% for n in news %}
+    {{ n.newsTitle }}<br>
+    {{ n.newsContent | raw }}<br>
+    {{ n.game.gameName }}
+    <hr/>
+{% endfor %}
+
 {% endblock %}

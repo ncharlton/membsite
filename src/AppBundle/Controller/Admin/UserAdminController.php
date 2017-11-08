@@ -11,7 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * @Route("admin/user", name="user_admin")
+ * @Route("admin/user", name="admin_user")
  */
 class UserAdminController extends Controller
 {
@@ -30,7 +30,7 @@ class UserAdminController extends Controller
     }
 
     /**
-     * @Route("/{user}", name="user_admin_view")
+     * @Route("/{user}", name="admin_user_view")
      * @ParamConverter("user", options={"mapping" : {"user":"username"}})
      */
     public function viewAction(User $user)
@@ -41,7 +41,7 @@ class UserAdminController extends Controller
     }
 
     /**
-     * @Route("/{user}/edit", name="user_admin_edit")
+     * @Route("/{user}/edit", name="admin_user_edit")
      * @ParamConverter("user", options={"mapping" : {"user":"username"}})
      */
     public function editAction(Request $request, User $user)
@@ -61,7 +61,7 @@ class UserAdminController extends Controller
                 "Successfully edited!"
             );
 
-            return $this->redirectToRoute("user_admin_edit", [
+            return $this->redirectToRoute("admin_user_edit", [
                 'user' => $user->getUsername()
             ]);
         } elseif ($form->isSubmitted()) {
@@ -78,7 +78,7 @@ class UserAdminController extends Controller
     }
 
     /**
-     * @Route("/{user}/delete", name="user_admin_delete")
+     * @Route("/{user}/delete", name="admin_user_delete")
      * @ParamConverter("user", options={"mapping" : {"user":"username"}})
      */
     public function deleteAction(User $user) {
@@ -94,6 +94,6 @@ class UserAdminController extends Controller
             'Successully deleted'
         );
 
-        return $this->redirectToRoute("user_admin_index");
+        return $this->redirectToRoute("admin_user_index");
     }
 }

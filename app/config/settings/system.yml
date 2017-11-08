@@ -1,0 +1,3 @@
+parameters:
+    # news
+    system.news.max.results: 10

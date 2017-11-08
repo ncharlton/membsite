@@ -1,0 +1,3 @@
+parameters:
+    message.user.notloggedin: 'You have to login'
+    message.user.loggedin: 'Your logged in'

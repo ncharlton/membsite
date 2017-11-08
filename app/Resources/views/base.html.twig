@@ -15,11 +15,16 @@
         <header>
             {% if app.user %}
                 <a href="{{ path("security_logout") }}">Logout</a>
+
+                {% if app.user.isSuperAdmin or app.user.isAdmin %}
+                    <a href="{{ path("admin_main_index") }}">Admin Dashboard</a>
+                {% endif %}
+
             {% else %}
                 <a href="{{ path("security_login") }}">Login</a>
             {% endif %}
 
-            <a href="{{ path("main_admin_index") }}">Admin Dashboard</a>
+
         </header>
 
         <hr>
