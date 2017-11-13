@@ -29,6 +29,9 @@ class News
     private $game;
 
     /**
+     * @var User $author
+     *
+     * @Gedmo\Blameable(on="create")
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="news")
      * @ORM\JoinColumn(name="author", referencedColumnName="user_id")
      */
@@ -60,27 +63,16 @@ class News
 
     /**
      * @ORM\Column(type="datetime")
+     * @Gedmo\Timestampable(on="create")
      */
     private $created_at;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Gedmo\Timestampable(on="update")
      */
     private $updated_at;
 
-    /**
-     *
-     * @ORM\PrePersist
-     * @ORM\PreUpdate
-     */
-    public function updatedTimestamps()
-    {
-        $this->setUpdatedAt(new \DateTime('now'));
-
-        if ($this->getCreatedAt() == null) {
-            $this->setCreatedAt(new \DateTime('now'));
-        }
-    }
 
     /**
      * @return mixed
@@ -120,14 +112,6 @@ class News
     public function getAuthor()
     {
         return $this->author;
-    }
-
-    /**
-     * @param User $author
-     */
-    public function setAuthor(User $author)
-    {
-        $this->author = $author;
     }
 
     /**

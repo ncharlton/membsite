@@ -66,8 +66,6 @@ class GameAdminController extends Controller
      */
     public function viewAction(Game $game)
     {
-        $em = $this->getDoctrine()->getManager();
-
         return $this->render("admin/game/view.html.twig", [
             'game' => $game
         ]);

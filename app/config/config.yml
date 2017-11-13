@@ -65,9 +65,9 @@ stof_doctrine_extensions:
     translation_fallback: true
     orm:
         default:
-            tree: true
             timestampable: true
             sluggable: true
+            blameable: true
 
 # Swiftmailer Configuration
 swiftmailer:
@@ -76,6 +76,7 @@ swiftmailer:
     username: '%mailer_user%'
     password: '%mailer_password%'
     spool: { type: memory }
+
 
 
 
