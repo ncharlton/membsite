@@ -143,4 +143,38 @@ class TwitchService
         } else
             return false;
     }
+
+    /**
+     * @param $clipUrl
+     * @param $clipName
+     * @return array
+     */
+    public function getClip($clipUrl) {
+        $headers = array(
+            'Accept' => 'application/vnd.twitchtv.v5+json',
+            'Client-ID' => $this->publicKey
+        );
+
+        $url = "";
+        if(substr( $clipUrl, 0, 8 ) === "https://") {
+            $url = "https://api.twitch.tv/kraken/clips/" . str_replace("https://clips.twitch.tv/", "", $clipUrl);
+        }else{
+            $url = "https://api.twitch.tv/kraken/clips/" . $clipUrl;
+        }
+        $clip = Unirest::get($url, $headers);
+
+        return array(
+            'clipName' => $clip->body->title,
+            'clipTrackingId' => $clip->body->tracking_id,
+            'clipSlug' => $clip->body->slug,
+            'clipCreator' => $clip->body->curator->name,
+            'clipEmbedUrl' => $clip->body->embed_url,
+            'clipVodId' => $clip->body->vod->id,
+            'clipDuration' => $clip->body->duration,
+            'clipCreatedAt' => $clip->body->created_at,
+            'clipHits' => $clip->body->views,
+            'clipThumbnailMedium' => $clip->body->thumbnails->medium,
+            'clipThumbnailSmall' => $clip->body->thumbnails->small
+        );
+    }
 }

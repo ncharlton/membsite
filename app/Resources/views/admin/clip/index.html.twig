@@ -1,0 +1,49 @@
+{% extends "admin/base.html.twig" %}
+
+{% block title %}All clips{% endblock %}
+
+{% block body %}
+    <a href="{{ path('admin_clip_new') }}">New Clips</a>
+    <hr>
+    <table>
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Clip Tracking ID</th>
+            <th>Clip Slug</th>
+            <th>Clip Name</th>
+            <th>Clip Creator</th>
+            <th>Clip Vod ID</th>
+            <th>Clip Duration</th>
+            <th>Clip Created At</th>
+            <th>Clip Hits</th>
+            <th>Clip Author</th>
+            <th>Clip Thumbnail (small)</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for clip in allclips %}
+            <tr>
+                <td>{{ clip.clip_id }}</td>
+                <td>{{ clip.clip_tracking_id }}</td>
+                <td>{{ clip.clip_slug }}</td>
+                <td>{{ clip.clip_name }}</td>
+                <td>{{ clip.clip_creator }}</td>
+                <td>{{ clip.clip_vod_id }}</td>
+                <td>{{ clip.clip_duration }}</td>
+                <td>{{ clip.clip_created_at | date("d/m/Y") }}</td>
+                <td>{{ clip.clip_hits }}</td>
+                <td>{{ clip.author.getUsername() }}</td>
+                <td>
+                    <img src="{{ clip.clip_thumbnail_small }}">
+                </td>
+                <td>
+                    <a href="{{ path('admin_clip_delete', {'slug' : clip.clip_slug}) }}">
+                        Delete
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

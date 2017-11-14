@@ -23,7 +23,7 @@ class MainController extends Controller
         $news = $this->getDoctrine()
             ->getRepository('AppBundle:News')
             ->findLimitOrderedByName(
-                $this->getParameter('system.news.max.results')
+                10
             );
 
         return $this->render('main/index.html.twig', [
