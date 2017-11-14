@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Request;
 class UserAdminController extends Controller
 {
     /**
-     * @Route("/", name="user_admin_index")
+     * @Route("/", name="admin_user_index")
      */
     public function indexAction()
     {

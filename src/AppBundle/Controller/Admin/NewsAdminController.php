@@ -45,12 +45,6 @@ class NewsAdminController extends Controller
              */
             $news = $form->getData();
 
-            $news->setAuthor(
-                $this->get('security.token_storage')
-                    ->getToken()
-                    ->getUser()
-            );
-
             $em = $this->getDoctrine()->getManager();
             $em->persist($news);
             $em->flush();

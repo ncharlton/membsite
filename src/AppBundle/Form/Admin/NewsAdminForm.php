@@ -21,7 +21,7 @@ class NewsAdminForm extends AbstractType
             ->add("newsKeywords", TextType::class)
             ->add("newsContent", CKEditorType::class, [
                 "config" => [
-                    "toolbar" => "basic"
+                    "toolbar" => "full"
                 ]
             ])
             ->add("game", EntityType::class, [
