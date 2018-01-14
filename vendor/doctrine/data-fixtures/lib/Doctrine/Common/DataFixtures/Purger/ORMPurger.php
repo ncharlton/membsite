@@ -59,7 +59,7 @@ class ORMPurger implements PurgerInterface
      * @param EntityManagerInterface $em EntityManagerInterface instance used for persistence.
      * @param string[] $excluded array of table/view names to be excleded from purge
      */
-    public function __construct(EntityManagerInterface $em = null, array $excluded = array())
+    public function __construct(EntityManagerInterface $em = null, array $excluded = [])
     {
         $this->em = $em;
         $this->excluded = $excluded;
@@ -109,7 +109,7 @@ class ORMPurger implements PurgerInterface
     /** @inheritDoc */
     public function purge()
     {
-        $classes = array();
+        $classes = [];
 
         foreach ($this->em->getMetadataFactory()->getAllMetadata() as $metadata) {
             if (! $metadata->isMappedSuperclass && ! (isset($metadata->isEmbeddedClass) && $metadata->isEmbeddedClass)) {
@@ -140,18 +140,18 @@ class ORMPurger implements PurgerInterface
             $orderedTables[] = $this->getTableName($class, $platform);
         }
 
-		$connection = $this->em->getConnection();
-		$filterExpr = $connection->getConfiguration()->getFilterSchemaAssetsExpression();
-		$emptyFilterExpression = empty($filterExpr);
-		foreach($orderedTables as $tbl) {
-			if(($emptyFilterExpression||preg_match($filterExpr, $tbl)) && array_search($tbl, $this->excluded) === false){
-				if ($this->purgeMode === self::PURGE_MODE_DELETE) {
-					$connection->executeUpdate("DELETE FROM " . $tbl);
-				} else {
-					$connection->executeUpdate($platform->getTruncateTableSQL($tbl, true));
-				}
-			}
-		}
+        $connection = $this->em->getConnection();
+        $filterExpr = $connection->getConfiguration()->getFilterSchemaAssetsExpression();
+        $emptyFilterExpression = empty($filterExpr);
+        foreach($orderedTables as $tbl) {
+            if(($emptyFilterExpression||preg_match($filterExpr, $tbl)) && array_search($tbl, $this->excluded) === false){
+                if ($this->purgeMode === self::PURGE_MODE_DELETE) {
+                    $connection->executeUpdate("DELETE FROM " . $tbl);
+                } else {
+                    $connection->executeUpdate($platform->getTruncateTableSQL($tbl, true));
+                }
+            }
+        }
     }
 
     /**
@@ -219,7 +219,7 @@ class ORMPurger implements PurgerInterface
      */
     private function getAssociationTables(array $classes, AbstractPlatform $platform)
     {
-        $associationTables = array();
+        $associationTables = [];
 
         foreach ($classes as $class) {
             foreach ($class->associationMappings as $assoc) {

@@ -2,20 +2,21 @@
 <html>
     <head>
         <meta charset="UTF-8" />
-        <title>{% block title %}{% endblock %}</title>
+        <title>Memb.tv Admin Panel - {% block title %}{% endblock %}</title>
 
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
 
         {% block stylesheets %}
             <link rel="stylesheet" type="text/css" href="{{ asset('css/bootstrap/bootstrap.min.css') }}">
+            <link rel="stylesheet" type="text/css" href="{{ asset('bundles/open-iconic-master/font/css/open-iconic-bootstrap.css') }}" rel="stylesheet">
             <link rel="stylesheet" type="text/css" href="{{ asset('css/admin.css') }}">
         {% endblock %}
     </head>
     <body>
         {% block header %}
-            <header class="container-fluid admin-header">
+            <header class="admin-header">
                 <ul>
-                    <li><a href="{{ path('main_index') }}">Frontpage</a></li>
+                    <li><a href="{{ path('main_index') }}">Memb.tv</a></li>
                     <li><a href="{{ path('admin_user_index') }}">Users</a></li>
                     <li><a href="{{ path('admin_game_index') }}">Games</a></li>
                     <li><a href="{{ path('admin_news_index') }}">News</a></li>
@@ -25,14 +26,26 @@
             </header>
         {% endblock %}
 
-        {% for msg in app.flashes('success') %}
-            <p>{{ msg }}</p>
-        {% endfor %}
-        {% for msg in app.flashes('error') %}
-            <p>{{ msg }}</p>
-        {% endfor %}
+        <div class="container-fluid">
+            {% for msg in app.flashes('success') %}
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ msg }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endfor %}
+            {% for msg in app.flashes('error') %}
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    {{ msg }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endfor %}
 
-        {% block body %}{% endblock %}
+            {% block body %}{% endblock %}
+        </div>
         {% block javascripts %}
             <script type="text/javascript" src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
         {% endblock %}

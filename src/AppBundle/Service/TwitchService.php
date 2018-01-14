@@ -163,18 +163,24 @@ class TwitchService
         }
         $clip = Unirest::get($url, $headers);
 
-        return array(
-            'clipName' => $clip->body->title,
-            'clipTrackingId' => $clip->body->tracking_id,
-            'clipSlug' => $clip->body->slug,
-            'clipCreator' => $clip->body->curator->name,
-            'clipEmbedUrl' => $clip->body->embed_url,
-            'clipVodId' => $clip->body->vod->id,
-            'clipDuration' => $clip->body->duration,
-            'clipCreatedAt' => $clip->body->created_at,
-            'clipHits' => $clip->body->views,
-            'clipThumbnailMedium' => $clip->body->thumbnails->medium,
-            'clipThumbnailSmall' => $clip->body->thumbnails->small
-        );
+        if($clip) {
+            $vod_id = ($clip->body->vod) ? $clip->body->vod->id : 0;
+
+            return array(
+                'clipName' => $clip->body->title,
+                'clipTrackingId' => $clip->body->tracking_id,
+                'clipSlug' => $clip->body->slug,
+                'clipCreator' => $clip->body->curator->name,
+                'clipEmbedUrl' => $clip->body->embed_url,
+                'clipVodId' => $vod_id,
+                'clipDuration' => $clip->body->duration,
+                'clipCreatedAt' => $clip->body->created_at,
+                'clipHits' => $clip->body->views,
+                'clipThumbnailMedium' => $clip->body->thumbnails->medium,
+                'clipThumbnailSmall' => $clip->body->thumbnails->small
+            );
+        } else {
+            return false;
+        }
     }
 }

@@ -14,10 +14,12 @@ namespace Symfony\Component\Security\Guard\Firewall;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\Security\Guard\AbstractGuardAuthenticator;
 use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
+use Symfony\Component\Security\Guard\GuardAuthenticatorInterface;
 use Symfony\Component\Security\Guard\Token\PreAuthenticationGuardToken;
 use Symfony\Component\Security\Core\Authentication\AuthenticationManagerInterface;
-use Symfony\Component\Security\Guard\GuardAuthenticatorInterface;
+use Symfony\Component\Security\Guard\AuthenticatorInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
@@ -28,6 +30,7 @@ use Symfony\Component\Security\Http\RememberMe\RememberMeServicesInterface;
  * Authentication listener for the "guard" system.
  *
  * @author Ryan Weaver <ryan@knpuniversity.com>
+ * @author Amaury Leroux de Lens <amaury@lerouxdelens.com>
  */
 class GuardAuthenticationListener implements ListenerInterface
 {
@@ -39,11 +42,11 @@ class GuardAuthenticationListener implements ListenerInterface
     private $rememberMeServices;
 
     /**
-     * @param GuardAuthenticatorHandler              $guardHandler          The Guard handler
-     * @param AuthenticationManagerInterface         $authenticationManager An AuthenticationManagerInterface instance
-     * @param string                                 $providerKey           The provider (i.e. firewall) key
-     * @param iterable|GuardAuthenticatorInterface[] $guardAuthenticators   The authenticators, with keys that match what's passed to GuardAuthenticationProvider
-     * @param LoggerInterface                        $logger                A LoggerInterface instance
+     * @param GuardAuthenticatorHandler         $guardHandler          The Guard handler
+     * @param AuthenticationManagerInterface    $authenticationManager An AuthenticationManagerInterface instance
+     * @param string                            $providerKey           The provider (i.e. firewall) key
+     * @param iterable|AuthenticatorInterface[] $guardAuthenticators   The authenticators, with keys that match what's passed to GuardAuthenticationProvider
+     * @param LoggerInterface                   $logger                A LoggerInterface instance
      */
     public function __construct(GuardAuthenticatorHandler $guardHandler, AuthenticationManagerInterface $authenticationManager, $providerKey, $guardAuthenticators, LoggerInterface $logger = null)
     {
@@ -98,12 +101,35 @@ class GuardAuthenticationListener implements ListenerInterface
                 $this->logger->debug('Calling getCredentials() on guard configurator.', array('firewall_key' => $this->providerKey, 'authenticator' => get_class($guardAuthenticator)));
             }
 
+            // abort the execution of the authenticator if it doesn't support the request
+            if ($guardAuthenticator instanceof AuthenticatorInterface) {
+                if (!$guardAuthenticator->supports($request)) {
+                    return;
+                }
+                // as there was a support for given request,
+                // authenticator is expected to give not-null credentials.
+                $credentialsCanBeNull = false;
+            } else {
+                // deprecated since version 3.4, to be removed in 4.0
+                $credentialsCanBeNull = true;
+            }
+
             // allow the authenticator to fetch authentication info from the request
             $credentials = $guardAuthenticator->getCredentials($request);
 
-            // allow null to be returned to skip authentication
             if (null === $credentials) {
-                return;
+                // deprecated since version 3.4, to be removed in 4.0
+                if ($credentialsCanBeNull) {
+                    return;
+                }
+
+                if ($guardAuthenticator instanceof AbstractGuardAuthenticator) {
+                    @trigger_error(sprintf('Returning null from "%1$s::getCredentials()" is deprecated since Symfony 3.4 and will throw an \UnexpectedValueException in 4.0. Return false from "%1$s::supports()" instead.', get_class($guardAuthenticator)), E_USER_DEPRECATED);
+
+                    return;
+                }
+
+                throw new \UnexpectedValueException(sprintf('The return value of "%1$s::getCredentials()" must not be null. Return false from "%1$s::supports()" instead.', get_class($guardAuthenticator)));
             }
 
             // create a token with the unique key, so that the provider knows which authenticator to use

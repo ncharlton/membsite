@@ -3,47 +3,47 @@
 {% block title %}All clips{% endblock %}
 
 {% block body %}
-    <a href="{{ path('admin_clip_new') }}">New Clips</a>
-    <hr>
-    <table>
-        <thead>
+    <h1 class="float-left">Clips</h1>
+    <a class="btn btn-primary float-right" href="{{ path('admin_clip_new') }}" role="button">Add Clip</a>
+
+    <table class="table">
+        <thead class="thead-light">
         <tr>
-            <th>#</th>
-            <th>Clip Tracking ID</th>
-            <th>Clip Slug</th>
-            <th>Clip Name</th>
-            <th>Clip Creator</th>
-            <th>Clip Vod ID</th>
-            <th>Clip Duration</th>
-            <th>Clip Created At</th>
-            <th>Clip Hits</th>
-            <th>Clip Author</th>
-            <th>Clip Thumbnail (small)</th>
+            <th>{{ knp_pagination_sortable(clips, '#', 'clips.clip_id') }}</th>
+            <th>Name</th>
+            <th>Creator</th>
+            <th>Vod ID</th>
+            <th>{{ knp_pagination_sortable(clips, 'Duration', 'clips.clip_duration') }}</th>
+            <th>{{ knp_pagination_sortable(clips, 'Created At', 'clips.clip_created_at') }}</th>
+            <th>Author</th>
+            <th>Thumbnail</th>
+            <th></th>
         </tr>
         </thead>
         <tbody>
-        {% for clip in allclips %}
+        {% for clip in clips %}
             <tr>
-                <td>{{ clip.clip_id }}</td>
-                <td>{{ clip.clip_tracking_id }}</td>
-                <td>{{ clip.clip_slug }}</td>
-                <td>{{ clip.clip_name }}</td>
-                <td>{{ clip.clip_creator }}</td>
-                <td>{{ clip.clip_vod_id }}</td>
-                <td>{{ clip.clip_duration }}</td>
-                <td>{{ clip.clip_created_at | date("d/m/Y") }}</td>
-                <td>{{ clip.clip_hits }}</td>
-                <td>{{ clip.author.getUsername() }}</td>
+                <td>{{ clip.clipId }}</td>
+                <td><a href="{{ path('clip_view', {'slug' : clip.clipSlug}) }}" target="_blank">{{ clip.clipName }}</a></td>
+                <td>{{ clip.clipCreator }}</td>
+                <td>{{ clip.clipVodId }}</td>
+                <td>{{ clip.clipDuration }}</td>
+                <td>{{ clip.clipCreatedAt | date("d/m/Y") }}</td>
+                <td><a href="{{ path("admin_user_view", {'user' : clip.author.username}) }}" >{{ clip.author.username }}</a></td>
                 <td>
-                    <img src="{{ clip.clip_thumbnail_small }}">
+                    <img class="rounded" src="{{ clip.clipThumbnailSmall }}">
                 </td>
                 <td>
-                    <a href="{{ path('admin_clip_delete', {'slug' : clip.clip_slug}) }}">
-                        Delete
+                    <a href="{{ path('admin_clip_delete', {'slug' : clip.clipSlug}) }}">
+                        <span class="oi oi-x text-danger" title="Delete" aria-hidden="true"></span>
                     </a>
                 </td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
+
+    <div class="navigation">
+        {{ knp_pagination_render(clips) }}
+    </div>
 {% endblock %}

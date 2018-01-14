@@ -25,7 +25,12 @@ class FirewallContext
     private $exceptionListener;
     private $config;
 
-    public function __construct(array $listeners, ExceptionListener $exceptionListener = null, FirewallConfig $config = null)
+    /**
+     * @param \Traversable|array     $listeners
+     * @param ExceptionListener|null $exceptionListener
+     * @param FirewallConfig|null    $firewallConfig
+     */
+    public function __construct($listeners, ExceptionListener $exceptionListener = null, FirewallConfig $config = null)
     {
         $this->listeners = $listeners;
         $this->exceptionListener = $exceptionListener;
@@ -42,11 +47,14 @@ class FirewallContext
      */
     public function getContext()
     {
-        @trigger_error(sprintf('Method %s() is deprecated since version 3.3 and will be removed in 4.0. Use %s::getListeners/getExceptionListener() instead.', __METHOD__, __CLASS__), E_USER_DEPRECATED);
+        @trigger_error(sprintf('Method %s() is deprecated since Symfony 3.3 and will be removed in 4.0. Use %s::getListeners/getExceptionListener() instead.', __METHOD__, __CLASS__), E_USER_DEPRECATED);
 
         return array($this->getListeners(), $this->getExceptionListener());
     }
 
+    /**
+     * @return \Traversable|array
+     */
     public function getListeners()
     {
         return $this->listeners;

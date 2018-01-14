@@ -18,19 +18,13 @@
             <factory class="Http\Discovery\HttpAsyncClientDiscovery" method="find" />
         </service>
 
-        <!-- Decorate discovered clients with PluginClient -->
-        <service id="httplug.auto_discovery.auto_discovered_client.plugin" class="Http\Client\Common\PluginClient" decorates="httplug.auto_discovery.auto_discovered_client" decoration-priority="1" public="false">
-            <argument type="service" id="httplug.auto_discovery.auto_discovered_client.plugin.inner"/>
-        </service>
-        <service id="httplug.auto_discovery.auto_discovered_async.plugin" class="Http\Client\Common\PluginClient" decorates="httplug.auto_discovery.auto_discovered_async" decoration-priority="1" public="false">
-            <argument type="service" id="httplug.auto_discovery.auto_discovered_async.plugin.inner"/>
-        </service>
-
         <!-- Discovery with autowiring support for Symfony 3.3+ -->
         <service id="httplug.message_factory.default" class="Http\Message\MessageFactory">
             <factory class="Http\Discovery\MessageFactoryDiscovery" method="find" />
         </service>
         <service id="Http\Message\MessageFactory" alias="httplug.message_factory" public="false" />
+        <service id="Http\Message\RequestFactory" alias="httplug.message_factory" public="false" />
+        <service id="Http\Message\ResponseFactory" alias="httplug.message_factory" public="false" />
 
         <service id="httplug.stream_factory.default" class="Http\Message\StreamFactory">
             <factory class="Http\Discovery\StreamFactoryDiscovery" method="find" />
@@ -51,6 +45,9 @@
             <factory class="Http\Discovery\HttpClientDiscovery" method="find" />
         </service>
         <service id="Http\Client\HttpClient" alias="httplug.client" public="false" />
+
+        <!-- PluginClientFactory -->
+        <service id="Http\Client\Common\PluginClientFactory" class="Http\Client\Common\PluginClientFactory" public="false" />
 
         <!-- ClientFactories -->
         <service id="httplug.factory.auto" class="Http\HttplugBundle\ClientFactory\AutoDiscoveryFactory" public="false" />

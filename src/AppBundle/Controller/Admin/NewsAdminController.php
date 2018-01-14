@@ -13,7 +13,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 /**
  * Class NewsAdminController
  * @package AppBundle\Controller
- * @Route("/admin/news", name="admin_news")
+ * @Route("/admin/news")
  */
 class NewsAdminController extends Controller
 {

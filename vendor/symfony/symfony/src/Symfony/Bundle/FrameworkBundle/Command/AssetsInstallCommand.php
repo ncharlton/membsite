@@ -26,6 +26,8 @@ use Symfony\Component\HttpKernel\Bundle\BundleInterface;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Gábor Egyed <gabor.egyed@gmail.com>
+ *
+ * @final since version 3.4
  */
 class AssetsInstallCommand extends ContainerAwareCommand
 {
@@ -33,10 +35,27 @@ class AssetsInstallCommand extends ContainerAwareCommand
     const METHOD_ABSOLUTE_SYMLINK = 'absolute symlink';
     const METHOD_RELATIVE_SYMLINK = 'relative symlink';
 
-    /**
-     * @var Filesystem
-     */
+    protected static $defaultName = 'assets:install';
+
     private $filesystem;
+
+    /**
+     * @param Filesystem $filesystem
+     */
+    public function __construct($filesystem = null)
+    {
+        if (!$filesystem instanceof Filesystem) {
+            @trigger_error(sprintf('%s() expects an instance of "%s" as first argument since Symfony 3.4. Not passing it is deprecated and will throw a TypeError in 4.0.', __METHOD__, Filesystem::class), E_USER_DEPRECATED);
+
+            parent::__construct($filesystem);
+
+            return;
+        }
+
+        parent::__construct();
+
+        $this->filesystem = $filesystem;
+    }
 
     /**
      * {@inheritdoc}
@@ -44,7 +63,6 @@ class AssetsInstallCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('assets:install')
             ->setDefinition(array(
                 new InputArgument('target', InputArgument::OPTIONAL, 'The target directory', 'public'),
             ))
@@ -79,10 +97,17 @@ EOT
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        // BC to be removed in 4.0
+        if (null === $this->filesystem) {
+            $this->filesystem = $this->getContainer()->get('filesystem');
+            $baseDir = $this->getContainer()->getParameter('kernel.project_dir');
+        }
+
+        $kernel = $this->getApplication()->getKernel();
         $targetArg = rtrim($input->getArgument('target'), '/');
 
         if (!is_dir($targetArg)) {
-            $targetArg = $this->getContainer()->getParameter('kernel.project_dir').'/'.$targetArg;
+            $targetArg = (isset($baseDir) ? $baseDir : $kernel->getContainer()->getParameter('kernel.project_dir')).'/'.$targetArg;
 
             if (!is_dir($targetArg)) {
                 // deprecated, logic to be removed in 4.0
@@ -95,11 +120,7 @@ EOT
             }
         }
 
-        $this->filesystem = $this->getContainer()->get('filesystem');
-
-        // Create the bundles directory otherwise symlink will fail.
         $bundlesDir = $targetArg.'/bundles/';
-        $this->filesystem->mkdir($bundlesDir, 0777);
 
         $io = new SymfonyStyle($input, $output);
         $io->newLine();
@@ -122,7 +143,7 @@ EOT
         $exitCode = 0;
         $validAssetDirs = array();
         /** @var BundleInterface $bundle */
-        foreach ($this->getContainer()->get('kernel')->getBundles() as $bundle) {
+        foreach ($kernel->getBundles() as $bundle) {
             if (!is_dir($originDir = $bundle->getPath().'/Resources/public')) {
                 continue;
             }
@@ -163,10 +184,14 @@ EOT
             }
         }
         // remove the assets of the bundles that no longer exist
-        $dirsToRemove = Finder::create()->depth(0)->directories()->exclude($validAssetDirs)->in($bundlesDir);
-        $this->filesystem->remove($dirsToRemove);
+        if (is_dir($bundlesDir)) {
+            $dirsToRemove = Finder::create()->depth(0)->directories()->exclude($validAssetDirs)->in($bundlesDir);
+            $this->filesystem->remove($dirsToRemove);
+        }
 
-        $io->table(array('', 'Bundle', 'Method / Error'), $rows);
+        if ($rows) {
+            $io->table(array('', 'Bundle', 'Method / Error'), $rows);
+        }
 
         if (0 !== $exitCode) {
             $io->error('Some errors occurred while installing assets.');
@@ -174,7 +199,7 @@ EOT
             if ($copyUsed) {
                 $io->note('Some assets were installed via copy. If you make changes to these assets you have to run this command again.');
             }
-            $io->success('All assets were successfully installed.');
+            $io->success($rows ? 'All assets were successfully installed.' : 'No assets were provided by any bundle.');
         }
 
         return $exitCode;
@@ -237,6 +262,7 @@ EOT
     private function symlink($originDir, $targetDir, $relative = false)
     {
         if ($relative) {
+            $this->filesystem->mkdir(dirname($targetDir));
             $originDir = $this->filesystem->makePathRelative($originDir, realpath(dirname($targetDir)));
         }
         $this->filesystem->symlink($originDir, $targetDir);

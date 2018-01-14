@@ -55,6 +55,8 @@ class News
      */
     private $news_keywords;
 
+
+
     /**
      * @ORM\Column(type="string")
      * @Assert\NotBlank()
@@ -72,6 +74,7 @@ class News
      * @Gedmo\Timestampable(on="update")
      */
     private $updated_at;
+
 
 
     /**

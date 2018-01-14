@@ -31,7 +31,6 @@ class ComposerStaticInit731404e085fc2e7b15a2efb456131c40
         ),
         'T' => 
         array (
-            'Twig\\Extensions\\' => 16,
             'Twig\\' => 5,
             'Tests\\' => 6,
         ),
@@ -70,9 +69,9 @@ class ComposerStaticInit731404e085fc2e7b15a2efb456131c40
         array (
             'Monolog\\' => 8,
         ),
-        'J' => 
+        'K' => 
         array (
-            'JavierEguiluz\\Bundle\\EasyAdminBundle\\' => 37,
+            'Knp\\Bundle\\PaginatorBundle\\' => 27,
         ),
         'I' => 
         array (
@@ -90,7 +89,6 @@ class ComposerStaticInit731404e085fc2e7b15a2efb456131c40
             'Http\\Client\\Common\\' => 19,
             'Http\\Client\\' => 12,
             'Http\\Adapter\\Guzzle6\\' => 21,
-            'HWI\\Bundle\\OAuthBundle\\' => 23,
         ),
         'G' => 
         array (
@@ -102,15 +100,13 @@ class ComposerStaticInit731404e085fc2e7b15a2efb456131c40
         array (
             'Fig\\Link\\' => 9,
         ),
-        'E' => 
-        array (
-            'EasyCorp\\Bundle\\EasyAdminBundle\\' => 32,
-        ),
         'D' => 
         array (
+            'Doctrine\\ORM\\' => 13,
             'Doctrine\\Instantiator\\' => 22,
             'Doctrine\\DBAL\\Migrations\\' => 25,
             'Doctrine\\Common\\Inflector\\' => 26,
+            'Doctrine\\Common\\DataFixtures\\' => 29,
             'Doctrine\\Common\\Cache\\' => 22,
             'Doctrine\\Common\\Annotations\\' => 28,
             'Doctrine\\Common\\' => 16,
@@ -123,10 +119,6 @@ class ComposerStaticInit731404e085fc2e7b15a2efb456131c40
         array (
             'Composer\\CaBundle\\' => 18,
             'Clue\\StreamFilter\\' => 18,
-        ),
-        'B' => 
-        array (
-            'Buzz\\' => 5,
         ),
         'A' => 
         array (
@@ -142,10 +134,6 @@ class ComposerStaticInit731404e085fc2e7b15a2efb456131c40
         'Zend\\Code\\' => 
         array (
             0 => __DIR__ . '/..' . '/zendframework/zend-code/src',
-        ),
-        'Twig\\Extensions\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/twig/extensions/src',
         ),
         'Twig\\' => 
         array (
@@ -259,9 +247,9 @@ class ComposerStaticInit731404e085fc2e7b15a2efb456131c40
         array (
             0 => __DIR__ . '/..' . '/monolog/monolog/src/Monolog',
         ),
-        'JavierEguiluz\\Bundle\\EasyAdminBundle\\' => 
+        'Knp\\Bundle\\PaginatorBundle\\' => 
         array (
-            0 => __DIR__ . '/..' . '/javiereguiluz/easyadmin-bundle/legacy',
+            0 => __DIR__ . '/..' . '/knplabs/knp-paginator-bundle',
         ),
         'Ivory\\JsonBuilder\\' => 
         array (
@@ -294,8 +282,8 @@ class ComposerStaticInit731404e085fc2e7b15a2efb456131c40
         ),
         'Http\\Client\\Common\\Plugin\\' => 
         array (
-            0 => __DIR__ . '/..' . '/php-http/stopwatch-plugin/src',
-            1 => __DIR__ . '/..' . '/php-http/logger-plugin/src',
+            0 => __DIR__ . '/..' . '/php-http/logger-plugin/src',
+            1 => __DIR__ . '/..' . '/php-http/stopwatch-plugin/src',
             2 => __DIR__ . '/..' . '/php-http/cache-plugin/src',
         ),
         'Http\\Client\\Common\\' => 
@@ -309,10 +297,6 @@ class ComposerStaticInit731404e085fc2e7b15a2efb456131c40
         'Http\\Adapter\\Guzzle6\\' => 
         array (
             0 => __DIR__ . '/..' . '/php-http/guzzle6-adapter/src',
-        ),
-        'HWI\\Bundle\\OAuthBundle\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/hwi/oauth-bundle',
         ),
         'GuzzleHttp\\Psr7\\' => 
         array (
@@ -330,9 +314,9 @@ class ComposerStaticInit731404e085fc2e7b15a2efb456131c40
         array (
             0 => __DIR__ . '/..' . '/fig/link-util/src',
         ),
-        'EasyCorp\\Bundle\\EasyAdminBundle\\' => 
+        'Doctrine\\ORM\\' => 
         array (
-            0 => __DIR__ . '/..' . '/javiereguiluz/easyadmin-bundle/src',
+            0 => __DIR__ . '/..' . '/doctrine/orm/lib/Doctrine/ORM',
         ),
         'Doctrine\\Instantiator\\' => 
         array (
@@ -345,6 +329,10 @@ class ComposerStaticInit731404e085fc2e7b15a2efb456131c40
         'Doctrine\\Common\\Inflector\\' => 
         array (
             0 => __DIR__ . '/..' . '/doctrine/inflector/lib/Doctrine/Common/Inflector',
+        ),
+        'Doctrine\\Common\\DataFixtures\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/doctrine/data-fixtures/lib/Doctrine/Common/DataFixtures',
         ),
         'Doctrine\\Common\\Cache\\' => 
         array (
@@ -382,10 +370,6 @@ class ComposerStaticInit731404e085fc2e7b15a2efb456131c40
         array (
             0 => __DIR__ . '/..' . '/clue/stream-filter/src',
         ),
-        'Buzz\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/kriswallsmith/buzz/lib/Buzz',
-        ),
         'AppBundle\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src/AppBundle',
@@ -402,10 +386,6 @@ class ComposerStaticInit731404e085fc2e7b15a2efb456131c40
         ),
         'T' => 
         array (
-            'Twig_Extensions_' => 
-            array (
-                0 => __DIR__ . '/..' . '/twig/extensions/lib',
-            ),
             'Twig_' => 
             array (
                 0 => __DIR__ . '/..' . '/twig/twig/lib',
@@ -424,9 +404,12 @@ class ComposerStaticInit731404e085fc2e7b15a2efb456131c40
             array (
                 0 => __DIR__ . '/..' . '/ocramius/proxy-manager/src',
             ),
-            'Pagerfanta\\' => 
+        ),
+        'K' => 
+        array (
+            'Knp\\Component' => 
             array (
-                0 => __DIR__ . '/..' . '/pagerfanta/pagerfanta/src',
+                0 => __DIR__ . '/..' . '/knplabs/knp-components/src',
             ),
         ),
         'G' => 
@@ -438,10 +421,6 @@ class ComposerStaticInit731404e085fc2e7b15a2efb456131c40
         ),
         'D' => 
         array (
-            'Doctrine\\ORM\\' => 
-            array (
-                0 => __DIR__ . '/..' . '/doctrine/orm/lib',
-            ),
             'Doctrine\\DBAL\\' => 
             array (
                 0 => __DIR__ . '/..' . '/doctrine/dbal/lib',
@@ -449,10 +428,6 @@ class ComposerStaticInit731404e085fc2e7b15a2efb456131c40
             'Doctrine\\Common\\Lexer\\' => 
             array (
                 0 => __DIR__ . '/..' . '/doctrine/lexer/lib',
-            ),
-            'Doctrine\\Common\\DataFixtures' => 
-            array (
-                0 => __DIR__ . '/..' . '/doctrine/data-fixtures/lib',
             ),
             'Doctrine\\Common\\Collections\\' => 
             array (

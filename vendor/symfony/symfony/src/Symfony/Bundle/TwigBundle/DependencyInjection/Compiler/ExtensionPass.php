@@ -35,9 +35,6 @@ class ExtensionPass implements CompilerPassInterface
         if (!interface_exists('Symfony\Component\Routing\Generator\UrlGeneratorInterface')) {
             $container->removeDefinition('twig.extension.routing');
         }
-        if (!interface_exists('Symfony\Component\Translation\TranslatorInterface')) {
-            $container->removeDefinition('twig.extension.trans');
-        }
 
         if (!class_exists('Symfony\Component\Yaml\Yaml')) {
             $container->removeDefinition('twig.extension.yaml');
@@ -54,10 +51,6 @@ class ExtensionPass implements CompilerPassInterface
             $paths[$coreThemePath] = null;
             $container->getDefinition('twig.cache_warmer')->replaceArgument(2, $paths);
             $container->getDefinition('twig.template_iterator')->replaceArgument(2, $paths);
-        }
-
-        if ($container->has('translator')) {
-            $container->getDefinition('twig.extension.trans')->addTag('twig.extension');
         }
 
         if ($container->has('router')) {

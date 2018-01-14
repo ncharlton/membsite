@@ -27,7 +27,7 @@ class Collector extends DataCollector
 
     public function __construct()
     {
-        $this->data['stacks'] = [];
+        $this->reset();
     }
 
     /**
@@ -36,6 +36,15 @@ class Collector extends DataCollector
     public function collect(Request $request, Response $response, Exception $exception = null)
     {
         // We do not need to collect any data from the Symfony Request and Response
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function reset()
+    {
+        $this->data['stacks'] = [];
+        $this->activeStack = null;
     }
 
     /**
@@ -53,7 +62,7 @@ class Collector extends DataCollector
      */
     public function activateStack(Stack $stack)
     {
-        if ($this->activeStack !== null) {
+        if (null !== $this->activeStack) {
             $stack->setParent($this->activeStack);
         }
 
@@ -131,9 +140,13 @@ class Collector extends DataCollector
      */
     public function getClients()
     {
+        $stacks = array_filter($this->data['stacks'], function (Stack $stack) {
+            return null === $stack->getParent();
+        });
+
         return array_unique(array_map(function (Stack $stack) {
             return $stack->getClient();
-        }, $this->data['stacks']));
+        }, $stacks));
     }
 
     /**
@@ -141,11 +154,39 @@ class Collector extends DataCollector
      *
      * @return Stack[]
      */
-    public function getClientStacks($client)
+    public function getClientRootStacks($client)
     {
         return array_filter($this->data['stacks'], function (Stack $stack) use ($client) {
-            return $stack->getClient() == $client;
+            return $stack->getClient() == $client && null == $stack->getParent();
         });
+    }
+
+    /**
+     * Count all messages for a client.
+     *
+     * @param $client
+     *
+     * @return int
+     */
+    public function countClientMessages($client)
+    {
+        return array_sum(array_map(function (Stack $stack) {
+            return $this->countStackMessages($stack);
+        }, $this->getClientRootStacks($client)));
+    }
+
+    /**
+     * Recursively count message in stack.
+     *
+     * @param Stack $stack
+     *
+     * @return int
+     */
+    private function countStackMessages(Stack $stack)
+    {
+        return 1 + array_sum(array_map(function (Stack $child) {
+            return $this->countStackMessages($child);
+        }, $this->getChildrenStacks($stack)));
     }
 
     /**

@@ -1,10 +1,16 @@
 {% extends 'admin/base.html.twig' %}
 
-{% block title %}clips list{% endblock %}
+{% block title %}Add Clip{% endblock %}
 
 {% block body %}
     {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button type="submit">Add clips</button>
+    <div class="form-group">
+        <label for="Clip Url">{{ form_label(form.clipUrl, 'Clip Url') }}</label>
+        {{ form_widget(form.clipUrl, {'attr': {'class': 'form-control'}}) }}
+
+        <small id="emailHelp" class="form-text text-muted">Post the original Clip Url</small>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Add Clip</button>
     {{ form_end(form) }}
 {% endblock %}

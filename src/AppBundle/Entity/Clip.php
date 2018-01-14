@@ -11,8 +11,9 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @ORM\Entity
  * @ORM\Table(name="clip")
  * @UniqueEntity("clip_name")
+ * @UniqueEntity("clip_url")
  */
-class Clip{
+class Clip {
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id()
@@ -21,7 +22,12 @@ class Clip{
     public $clip_id;
 
     /**
-     * @Assert\NotBlank()
+     * @ORM\Column(type="string")
+     * @Assert\Url()
+     */
+    public $clip_url;
+
+    /**
      * @ORM\Column(type="integer")
      */
     private $clip_tracking_id;
@@ -33,61 +39,51 @@ class Clip{
     private $clip_slug;
 
     /**
-     * @Assert\NotBlank()
      * @ORM\Column(type="string")
      */
     private $clip_name;
 
     /**
-     * @Assert\NotBlank()
      * @ORM\Column(type="string")
      */
     private $clip_creator;
 
     /**
-     * @Assert\NotBlank()
      * @Assert\Url()
      * @ORM\Column(type="string")
      */
     private $clip_embed_url;
 
     /**
-     * @Assert\NotBlank()
      * @ORM\Column(type="integer")
      */
     private $clip_vod_id;
 
     /**
-     * @Assert\NotBlank()
      * @ORM\Column(type="string")
      */
     private $clip_duration;
 
     /**
-     * @Assert\NotBlank()
      * @ORM\Column(type="datetime")
+     * @Gedmo\Timestampable(on="create")
      */
     private $clip_created_at;
 
     /**
-     * @Assert\NotBlank()
-     * @ORM\Column(type="integer")
-     */
-    private $clip_hits;
-
-    /**
-     * @Assert\NotBlank()
      * @ORM\Column(type="string")
      */
     private $clip_thumbnail_medium;
 
     /**
-     * @Assert\NotBlank()
      * @ORM\Column(type="string")
      */
     private $clip_thumbnail_small;
 
     /**
+     * @var User $author
+     *
+     * @Gedmo\Blameable(on="create")
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="news")
      * @ORM\JoinColumn(name="author", referencedColumnName="user_id")
      */
@@ -104,6 +100,22 @@ class Clip{
     /**
      * @return mixed
      */
+    public function getClipUrl()
+    {
+        return $this->clip_url;
+    }
+
+    /**
+     * @param mixed $clip_url
+     */
+    public function setClipUrl($clip_url)
+    {
+        $this->clip_url = $clip_url;
+    }
+
+    /**
+     * @return mixed
+     */
     public function getClipName()
     {
         return $this->clip_name;
@@ -112,7 +124,7 @@ class Clip{
     /**
      * @return mixed
      */
-    public function getclip_tracking_id()
+    public function getClipTrackingId()
     {
         return $this->clip_tracking_id;
     }
@@ -120,7 +132,7 @@ class Clip{
     /**
      * @return mixed
      */
-    public function getclip_slug()
+    public function getClipSlug()
     {
         return $this->clip_slug;
     }
@@ -128,15 +140,7 @@ class Clip{
     /**
      * @return mixed
      */
-    public function getclip_name()
-    {
-        return $this->clip_name;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getclip_creator()
+    public function getClipCreator()
     {
         return $this->clip_creator;
     }
@@ -144,7 +148,15 @@ class Clip{
     /**
      * @return mixed
      */
-    public function getclip_vod_id()
+    public function getClipEmbedUrl()
+    {
+        return $this->clip_embed_url;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getClipVodId()
     {
         return $this->clip_vod_id;
     }
@@ -152,7 +164,7 @@ class Clip{
     /**
      * @return mixed
      */
-    public function getclip_duration()
+    public function getClipDuration()
     {
         return $this->clip_duration;
     }
@@ -160,7 +172,7 @@ class Clip{
     /**
      * @return mixed
      */
-    public function getclip_created_at()
+    public function getClipCreatedAt()
     {
         return $this->clip_created_at;
     }
@@ -168,23 +180,7 @@ class Clip{
     /**
      * @return mixed
      */
-    public function getclip_hits()
-    {
-        return $this->clip_hits;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getauthor()
-    {
-        return $this->author;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getclip_thumbnail_medium()
+    public function getClipThumbnailMedium()
     {
         return $this->clip_thumbnail_medium;
     }
@@ -192,7 +188,7 @@ class Clip{
     /**
      * @return mixed
      */
-    public function getclip_thumbnail_small()
+    public function getClipThumbnailSmall()
     {
         return $this->clip_thumbnail_small;
     }
@@ -203,14 +199,6 @@ class Clip{
     public function setClipTrackingId($clip_tracking_id)
     {
         $this->clip_tracking_id = $clip_tracking_id;
-    }
-
-    /**
-     * @param mixed $clip_slug
-     */
-    public function setClipSlug($clip_slug)
-    {
-        $this->clip_slug = $clip_slug;
     }
 
     /**
@@ -253,21 +241,6 @@ class Clip{
         $this->clip_duration = $clip_duration;
     }
 
-    /**
-     * @param mixed $clip_created_at
-     */
-    public function setClipCreatedAt($clip_created_at)
-    {
-        $this->clip_created_at = $clip_created_at;
-    }
-
-    /**
-     * @param mixed $clip_hits
-     */
-    public function setClipHits($clip_hits)
-    {
-        $this->clip_hits = $clip_hits;
-    }
 
     /**
      * @param mixed $clip_thumbnail_medium
@@ -286,11 +259,11 @@ class Clip{
     }
 
     /**
-     * @param mixed $author
+     * @return User
      */
-    public function setClipAuthor(User $author)
+    public function getAuthor(): User
     {
-        $this->author = $author;
+        return $this->author;
     }
 
 

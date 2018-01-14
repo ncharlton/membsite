@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Clip - {{ clip.clipName }}{% endblock %}
+
+{% block body %}
+    {{ clip.clipName }} <br>
+    {{ clip.clipUrl }}
+
+    <br> <br> <br>
+    <iframe src="{{ clip.clipEmbedUrl }}" width="800px" height="800px"></iframe>
+{% endblock %}

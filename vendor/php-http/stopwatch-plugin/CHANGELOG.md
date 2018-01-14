@@ -1,7 +1,14 @@
 # Change Log
 
 
-## UNRELEASED
+## 1.1.0 - 2017-11-29
+
+### Added
+
+- Support for Symfony 4
+- Show full URL in the event name
+
+## 1.0.1 - 2016-05-19
 
 ### Added
 

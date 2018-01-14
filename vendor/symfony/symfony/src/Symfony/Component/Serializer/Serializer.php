@@ -15,12 +15,13 @@ use Symfony\Component\Serializer\Encoder\ChainDecoder;
 use Symfony\Component\Serializer\Encoder\ChainEncoder;
 use Symfony\Component\Serializer\Encoder\EncoderInterface;
 use Symfony\Component\Serializer\Encoder\DecoderInterface;
+use Symfony\Component\Serializer\Exception\NotEncodableValueException;
+use Symfony\Component\Serializer\Exception\NotNormalizableValueException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Exception\LogicException;
-use Symfony\Component\Serializer\Exception\UnexpectedValueException;
 
 /**
  * Serializer serializes and deserializes data.
@@ -108,7 +109,7 @@ class Serializer implements SerializerInterface, NormalizerInterface, Denormaliz
     final public function serialize($data, $format, array $context = array())
     {
         if (!$this->supportsEncoding($format)) {
-            throw new UnexpectedValueException(sprintf('Serialization for the format %s is not supported', $format));
+            throw new NotEncodableValueException(sprintf('Serialization for the format %s is not supported', $format));
         }
 
         if ($this->encoder->needsNormalization($format)) {
@@ -124,7 +125,7 @@ class Serializer implements SerializerInterface, NormalizerInterface, Denormaliz
     final public function deserialize($data, $type, $format, array $context = array())
     {
         if (!$this->supportsDecoding($format)) {
-            throw new UnexpectedValueException(sprintf('Deserialization for the format %s is not supported', $format));
+            throw new NotEncodableValueException(sprintf('Deserialization for the format %s is not supported', $format));
         }
 
         $data = $this->decode($data, $format, $context);
@@ -160,18 +161,28 @@ class Serializer implements SerializerInterface, NormalizerInterface, Denormaliz
                 throw new LogicException('You must register at least one normalizer to be able to normalize objects.');
             }
 
-            throw new UnexpectedValueException(sprintf('Could not normalize object of type %s, no supporting normalizer found.', get_class($data)));
+            throw new NotNormalizableValueException(sprintf('Could not normalize object of type %s, no supporting normalizer found.', get_class($data)));
         }
 
-        throw new UnexpectedValueException(sprintf('An unexpected value could not be normalized: %s', var_export($data, true)));
+        throw new NotNormalizableValueException(sprintf('An unexpected value could not be normalized: %s', var_export($data, true)));
     }
 
     /**
      * {@inheritdoc}
+     *
+     * @throws NotNormalizableValueException
      */
     public function denormalize($data, $type, $format = null, array $context = array())
     {
-        return $this->denormalizeObject($data, $type, $format, $context);
+        if (!$this->normalizers) {
+            throw new LogicException('You must register at least one normalizer to be able to denormalize objects.');
+        }
+
+        if ($normalizer = $this->getDenormalizer($data, $type, $format, $context)) {
+            return $normalizer->denormalize($data, $type, $format, $context);
+        }
+
+        throw new NotNormalizableValueException(sprintf('Could not denormalize object of type %s, no supporting normalizer found.', $type));
     }
 
     /**
@@ -185,7 +196,7 @@ class Serializer implements SerializerInterface, NormalizerInterface, Denormaliz
             if (__CLASS__ !== get_class($this)) {
                 $r = new \ReflectionMethod($this, __FUNCTION__);
                 if (__CLASS__ !== $r->getDeclaringClass()->getName()) {
-                    @trigger_error(sprintf('Method %s() will have a third `$context = array()` argument in version 4.0. Not defining it is deprecated since 3.3.', __METHOD__), E_USER_DEPRECATED);
+                    @trigger_error(sprintf('Method %s() will have a third `$context = array()` argument in version 4.0. Not defining it is deprecated since Symfony 3.3.', __METHOD__), E_USER_DEPRECATED);
                 }
             }
 
@@ -206,7 +217,7 @@ class Serializer implements SerializerInterface, NormalizerInterface, Denormaliz
             if (__CLASS__ !== get_class($this)) {
                 $r = new \ReflectionMethod($this, __FUNCTION__);
                 if (__CLASS__ !== $r->getDeclaringClass()->getName()) {
-                    @trigger_error(sprintf('Method %s() will have a fourth `$context = array()` argument in version 4.0. Not defining it is deprecated since 3.3.', __METHOD__), E_USER_DEPRECATED);
+                    @trigger_error(sprintf('Method %s() will have a fourth `$context = array()` argument in version 4.0. Not defining it is deprecated since Symfony 3.3.', __METHOD__), E_USER_DEPRECATED);
                 }
             }
 
@@ -270,32 +281,6 @@ class Serializer implements SerializerInterface, NormalizerInterface, Denormaliz
     }
 
     /**
-     * Denormalizes data back into an object of the given class.
-     *
-     * @param mixed  $data    Data to restore
-     * @param string $class   The expected class to instantiate
-     * @param string $format  Format name, present to give the option to normalizers to act differently based on formats
-     * @param array  $context The context data for this particular denormalization
-     *
-     * @return object
-     *
-     * @throws LogicException
-     * @throws UnexpectedValueException
-     */
-    private function denormalizeObject($data, $class, $format, array $context = array())
-    {
-        if (!$this->normalizers) {
-            throw new LogicException('You must register at least one normalizer to be able to denormalize objects.');
-        }
-
-        if ($normalizer = $this->getDenormalizer($data, $class, $format, $context)) {
-            return $normalizer->denormalize($data, $class, $format, $context);
-        }
-
-        throw new UnexpectedValueException(sprintf('Could not denormalize object of type %s, no supporting normalizer found.', $class));
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function supportsEncoding($format/*, array $context = array()*/)
@@ -306,7 +291,7 @@ class Serializer implements SerializerInterface, NormalizerInterface, Denormaliz
             if (__CLASS__ !== get_class($this)) {
                 $r = new \ReflectionMethod($this, __FUNCTION__);
                 if (__CLASS__ !== $r->getDeclaringClass()->getName()) {
-                    @trigger_error(sprintf('Method %s() will have a second `$context = array()` argument in version 4.0. Not defining it is deprecated since 3.3.', __METHOD__), E_USER_DEPRECATED);
+                    @trigger_error(sprintf('Method %s() will have a second `$context = array()` argument in version 4.0. Not defining it is deprecated since Symfony 3.3.', __METHOD__), E_USER_DEPRECATED);
                 }
             }
 
@@ -327,7 +312,7 @@ class Serializer implements SerializerInterface, NormalizerInterface, Denormaliz
             if (__CLASS__ !== get_class($this)) {
                 $r = new \ReflectionMethod($this, __FUNCTION__);
                 if (__CLASS__ !== $r->getDeclaringClass()->getName()) {
-                    @trigger_error(sprintf('Method %s() will have a second `$context = array()` argument in version 4.0. Not defining it is deprecated since 3.3.', __METHOD__), E_USER_DEPRECATED);
+                    @trigger_error(sprintf('Method %s() will have a second `$context = array()` argument in version 4.0. Not defining it is deprecated since Symfony 3.3.', __METHOD__), E_USER_DEPRECATED);
                 }
             }
 

@@ -4,6 +4,8 @@ namespace AppBundle\Controller\Admin;
 
 use AppBundle\Entity\Clip;
 use AppBundle\Form\Admin\ClipAdminForm;
+use AppBundle\Form\ClipForm;
+use Knp\Component\Pager\Paginator;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -22,14 +24,24 @@ class ClipAdminController extends Controller
     /**
      * @Route("/", name="admin_clip_index")
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
-        $clips = $this->getDoctrine()
-            ->getRepository(Clip::class)
-            ->findAll();
+        $em = $this->getDoctrine()->getManager();
+        $dql = "SELECT clips FROM AppBundle:Clip clips ORDER BY clips.clip_id DESC";
+        $query = $em->createQuery($dql);
+
+        /**
+         * @var Paginator $paginator
+         */
+        $paginator = $this->get('knp_paginator');
+        $result = $paginator->paginate(
+            $query,
+            $request->query->getInt('page', 1),
+            $request->query->getInt('limit', 3)
+        );
 
         return $this->render('admin/clip/index.html.twig', [
-            'allclips' => $clips,
+            'clips' => $result
         ]);
     }
 
@@ -38,47 +50,57 @@ class ClipAdminController extends Controller
      */
     public function newAction(Request $request, TwitchService $twitchService)
     {
-        $form = $this->createForm(ClipAdminForm::class);
+        $form = $this->createForm(ClipForm::class);
 
-        // only handles data on post
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()) {
-            $clipdata = $form->getData();
+            /** @var Clip $clip */
+            $clip = $form->getData();
 
-            $clip = $twitchService->getClip($clipdata['clipUrl']);
-            $newclip = new Clip();
-            $newclip->setClipTrackingId($clip['clipTrackingId']);
-            $newclip->setClipName($clip['clipName']);
-            $newclip->setClipSlug($clip['clipSlug']);
-            $newclip->setClipCreator($clip['clipCreator']);
-            $newclip->setClipEmbedUrl($clip['clipEmbedUrl']);
-            $newclip->setClipVodId($clip['clipVodId']);
-            $newclip->setClipDuration($clip['clipDuration']);
-            $newclip->setClipCreatedAt(new \DateTime($clip['clipCreatedAt']));
-            $newclip->setClipHits($clip['clipHits']);
-            $newclip->setClipThumbnailMedium($clip['clipThumbnailMedium']);
-            $newclip->setClipThumbnailSmall($clip['clipThumbnailSmall']);
+            $clipData = $twitchService->getClip($clip->getClipUrl());
 
-            $newclip->setClipAuthor(
-                $this->get('security.token_storage')
-                    ->getToken()
-                    ->getUser()
-            );
+            if($clipData) {
+                $clip->setClipTrackingId($clipData['clipTrackingId']);
+                $clip->setClipName($clipData['clipName']);
+                $clip->setClipCreator($clipData['clipCreator']);
+                $clip->setClipEmbedUrl($clipData['clipEmbedUrl']);
+                $clip->setClipVodId($clipData['clipVodId']);
+                $clip->setClipDuration($clipData['clipDuration']);
+                $clip->setClipThumbnailMedium($clipData['clipThumbnailMedium']);
+                $clip->setClipThumbnailSmall($clipData['clipThumbnailSmall']);
 
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($newclip);
-            $em->flush();
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($clip);
+                $em->flush();
 
+                $this->addFlash(
+                    'success',
+                    'clip successully addded'
+                );
+
+                return $this->redirectToRoute("admin_clip_index");
+            } else {
+                $this->addFlash('error', 'wtf is that url?');
+            }
+        } else {
             $this->addFlash(
-                'success',
-                "Clip created by you"
+                'error',
+                'fuckers1'
             );
-
-            return $this->redirectToRoute("admin_clip_index");
         }
 
-        return $this->render("admin/clip/new.html.twig", [
+        return $this->render('admin/clip/new.html.twig', [
             'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/{slug}", name="admin_clip_view")
+     * @ParamConverter("clip", options={"mapping" : {"slug" : "clip_slug"}})
+     */
+    public function viewAction(Clip $clip) {
+        return $this->render(":clip:view.html.twig", [
+            'clip' => $clip
         ]);
     }
 

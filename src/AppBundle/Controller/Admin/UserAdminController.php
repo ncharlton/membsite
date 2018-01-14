@@ -4,6 +4,7 @@ namespace AppBundle\Controller\Admin;
 
 use AppBundle\Entity\User;
 use AppBundle\Form\Admin\UserAdminForm;
+use Knp\Component\Pager\Paginator;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -11,21 +12,31 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * @Route("admin/user", name="admin_user")
+ * @Route("admin/user")
  */
 class UserAdminController extends Controller
 {
     /**
      * @Route("/", name="admin_user_index")
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
-        $users = $this->getDoctrine()
-            ->getRepository('AppBundle:User')
-            ->findAll();
+        $em = $this->getDoctrine()->getManager();
+        $dql = "SELECT users FROM AppBundle:User users";
+        $query = $em->createQuery($dql);
+
+        /**
+         * @var Paginator $paginator
+         */
+        $paginator = $this->get('knp_paginator');
+        $result = $paginator->paginate(
+            $query,
+            $request->query->getInt('page', 1),
+            $request->query->getInt('limit', 25)
+        );
 
         return $this->render('admin/user/index.html.twig', [
-            'users' => $users
+            'users' => $result
         ]);
     }
 

@@ -20,6 +20,10 @@
                     <a href="{{ path("admin_main_index") }}">Admin Dashboard</a>
                 {% endif %}
 
+                <a href="{{ path('clip_new') }}">Add Clip</a>
+                <a href="{{ path("clip_index") }}">Clips</a>
+                <a href="{{ path("clip_my") }}">My Clips</a>
+
             {% else %}
                 <a href="{{ path("security_login") }}">Login</a>
             {% endif %}

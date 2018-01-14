@@ -12,7 +12,9 @@
 namespace Symfony\Component\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Argument\ArgumentInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Exception\RuntimeException;
 use Symfony\Component\DependencyInjection\ExpressionLanguage;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -31,7 +33,6 @@ class AnalyzeServiceReferencesPass extends AbstractRecursivePass implements Repe
 {
     private $graph;
     private $currentDefinition;
-    private $repeatedPass;
     private $onlyConstructorArguments;
     private $lazy;
     private $expressionLanguage;
@@ -49,7 +50,7 @@ class AnalyzeServiceReferencesPass extends AbstractRecursivePass implements Repe
      */
     public function setRepeatedPass(RepeatedPass $repeatedPass)
     {
-        $this->repeatedPass = $repeatedPass;
+        // no-op for BC
     }
 
     /**
@@ -94,7 +95,8 @@ class AnalyzeServiceReferencesPass extends AbstractRecursivePass implements Repe
                 $this->getDefinitionId((string) $value),
                 $targetDefinition,
                 $value,
-                $this->lazy || ($targetDefinition && $targetDefinition->isLazy())
+                $this->lazy || ($targetDefinition && $targetDefinition->isLazy()),
+                ContainerInterface::IGNORE_ON_UNINITIALIZED_REFERENCE === $value->getInvalidBehavior()
             );
 
             return $value;
@@ -153,6 +155,10 @@ class AnalyzeServiceReferencesPass extends AbstractRecursivePass implements Repe
     private function getExpressionLanguage()
     {
         if (null === $this->expressionLanguage) {
+            if (!class_exists(ExpressionLanguage::class)) {
+                throw new RuntimeException('Unable to use expressions as the Symfony ExpressionLanguage component is not installed.');
+            }
+
             $providers = $this->container->getExpressionLanguageProviders();
             $this->expressionLanguage = new ExpressionLanguage(null, $providers, function ($arg) {
                 if ('""' === substr_replace($arg, '', 1, -1)) {

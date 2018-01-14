@@ -16,7 +16,7 @@ class MainController extends Controller
      */
     public function indexAction(Request $request)
     {
-        // if user logged in through twitc => clean the url
+        // if user logged in through twitch => clean the url
         if($request->query->has('code'))
             return $this->redirectToRoute("main_index");
 

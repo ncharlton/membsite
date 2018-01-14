@@ -69,12 +69,9 @@ class FormDataCollector extends DataCollector implements FormDataCollectorInterf
     public function __construct(FormDataExtractorInterface $dataExtractor)
     {
         $this->dataExtractor = $dataExtractor;
-        $this->data = array(
-            'forms' => array(),
-            'forms_by_hash' => array(),
-            'nb_errors' => 0,
-        );
         $this->hasVarDumper = class_exists(ClassStub::class);
+
+        $this->reset();
     }
 
     /**
@@ -82,6 +79,15 @@ class FormDataCollector extends DataCollector implements FormDataCollectorInterf
      */
     public function collect(Request $request, Response $response, \Exception $exception = null)
     {
+    }
+
+    public function reset()
+    {
+        $this->data = array(
+            'forms' => array(),
+            'forms_by_hash' => array(),
+            'nb_errors' => 0,
+        );
     }
 
     /**

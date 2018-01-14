@@ -1,16 +1,26 @@
 header.admin-header {
   background: #171a1d;
+  margin-bottom: 15px;
   padding: 15px;
+  height: 70px;
 
   & ul {
+    padding: 0;
+
     & li {
       display: inline;
       float: left;
       margin: 0 25px;
+      padding: 10px;
 
       & a {
         color: white;
       }
+    }
+
+    & li:first-child {
+      margin-left: 0;
+      padding-left: 0;
     }
   }
 }

@@ -2,6 +2,36 @@
 
 The change log describes what is "Added", "Removed", "Changed" or "Fixed" between each release.
 
+## 1.8.1 - 2017-12-06
+
+### Fixed
+
+- `PluginClientFactory` name conflict with PHP 5.x.
+
+## 1.8.0 - 2017-11-30
+
+### Added
+
+- Symfony 4 support. 
+- Support autowiring of `Http\Client\Common\PluginClientFactory`.
+- Any third party library using `Http\Client\Common\PluginClientFactory` to create `Http\Client\Common\PluginClient`
+instances now gets zero config profiling.
+- `Http\HttplugBundle\Collector\Collector::reset()`
+
+### Changed
+
+- `ProfilePlugin` and `StackPlugin` are no longer registered as (private) services decorators. Those decorators are now
+created through the `Http\HttplugBundle\Collector\PluginClientFactory`.
+
+### Deprecated
+
+- The `Http\HttplugBundle\ClientFactory\PluginClientFactory` class.
+
+### Fixed
+
+- Removed wrapping auto discovered clients in a `PluginClient`, prevent double profiling.
+- Added missing service reference for `CachePlugin`'s `cache_key_generator` configuration option so that the option now actually works.
+
 ## 1.7.1 - 2017-08-04
 
 ### Fixed

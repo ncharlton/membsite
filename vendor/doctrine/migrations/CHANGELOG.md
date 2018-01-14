@@ -2,7 +2,12 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## [1.6.0] - 2016-11-09
+## [1.6.1] - 2017-11-18
+
+### Fixed
+  - [572: Only show generated migration in verbose mode](https://github.com/doctrine/migrations/pull/572) - @alcaeus
+
+## [1.6.0] - 2017-11-09
 
 ### Fixed
   - [536: Fix typo in exception message](https://github.com/doctrine/migrations/pull/536) - @mantiz
@@ -21,6 +26,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   - [535: Allow changing migration class template in generate command](https://github.com/doctrine/migrations/pull/535) - @PapsOu
   - [542: Enable phpcs to ensure coding style](https://github.com/doctrine/migrations/pull/542) - @lcobucci
   - [562: Allow providing a path for file dump](https://github.com/doctrine/migrations/pull/562) - @mikeSimonson
+  - [565: Allow Symfony 4](https://github.com/doctrine/migrations/565) - @weaverryan
   - [568: Add `ConfigurationHelperInterface` to allow overriding internal class](https://github.com/doctrine/migrations/pull/568) - @alcaeus
   - [571: Allow changing migration class template in diff command](https://github.com/doctrine/migrations/pull/571) - @alcaeus
 

@@ -58,7 +58,7 @@ final class CachePlugin implements Plugin
      *              We store a cache item for $cache_lifetime + max age of the response.
      *     @var array $methods list of request methods which can be cached
      *     @var array $respect_response_cache_directives list of cache directives this plugin will respect while caching responses
-     *     @var CacheKeyGenerator $cache_key_generator a class to generate the cache key. Defaults to SimpleGenerator
+     *     @var CacheKeyGenerator $cache_key_generator an object to generate the cache key. Defaults to a new instance of SimpleGenerator
      * }
      */
     public function __construct(CacheItemPoolInterface $pool, StreamFactory $streamFactory, array $config = [])
@@ -139,7 +139,7 @@ final class CachePlugin implements Plugin
         if ($cacheItem->isHit()) {
             $data = $cacheItem->get();
             // The array_key_exists() is to be removed in 2.0.
-            if (array_key_exists('expiresAt', $data) && ($data['expiresAt'] === null || time() < $data['expiresAt'])) {
+            if (array_key_exists('expiresAt', $data) && (null === $data['expiresAt'] || time() < $data['expiresAt'])) {
                 // This item is still valid according to previous cache headers
                 return new FulfilledPromise($this->createResponseFromCacheItem($cacheItem));
             }
@@ -210,7 +210,7 @@ final class CachePlugin implements Plugin
      */
     private function calculateCacheItemExpiresAfter($maxAge)
     {
-        if ($this->config['cache_lifetime'] === null && $maxAge === null) {
+        if (null === $this->config['cache_lifetime'] && null === $maxAge) {
             return;
         }
 
@@ -227,7 +227,7 @@ final class CachePlugin implements Plugin
      */
     private function calculateResponseExpiresAt($maxAge)
     {
-        if ($maxAge === null) {
+        if (null === $maxAge) {
             return;
         }
 
@@ -433,10 +433,6 @@ final class CachePlugin implements Plugin
         // The isset() is to be removed in 2.0.
         if (!isset($data['etag'])) {
             return;
-        }
-
-        if (!is_array($data['etag'])) {
-            return $data['etag'];
         }
 
         foreach ($data['etag'] as $etag) {

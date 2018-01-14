@@ -6,10 +6,10 @@
     <table>
         <thead>
             <tr>
-                <th>#</th>
+                <th>{{ knp_pagination_sortable(users, '#', 'users.user_id') }}</th>
                 <th>Superior Role</th>
                 <th>Activated</th>
-                <th>Username</th>
+                <th>{{ knp_pagination_sortable(users, 'Username', 'users.username') }}Username</th>
                 <th>Email</th>
                 <th>Roles</th>
                 <th>Type</th>
@@ -53,4 +53,7 @@
             {% endfor %}
         </tbody>
     </table>
+    <div class="navigation">
+        {{ knp_pagination_render(users) }}
+    </div>
 {% endblock %}
