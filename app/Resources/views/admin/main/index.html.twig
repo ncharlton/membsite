@@ -7,4 +7,12 @@
     <br>
     Your logged in as {{ user.username }}
 
+    <br>
+    <b>Active Users</b>
+    <br>
+    {% for users in activeUsers %}
+        <a href="{{ path('admin_user_view', {'user' : users.username}) }}" >{{ users.username }}</a>
+        <br>
+    {% endfor %}
+
 {% endblock %}

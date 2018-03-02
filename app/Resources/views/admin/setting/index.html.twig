@@ -1,0 +1,57 @@
+{% extends "admin/base.html.twig" %}
+
+{% block title %}Settings{% endblock %}
+
+{% block body %}
+    <div class="alert alert-info" role="info">
+        <h4 class="alert-heading">Settings naming guide!</h4>
+        <p>Settings only use lower case letters. <br>
+            Backend settings user the prefix: <strong>"admin"</strong><br>
+            Frontend settings use the prefix: <strong>"public"</strong><br>
+            Default settings user the prefix: <strong>"default"</strong><br>
+            <i>Prefixes can be combined</i><br>
+        </p>
+        <hr>
+        <p class="mb-0">Whenever you need to, be sure to use margin utilities to keep things nice and tidy.</p>
+    </div>
+
+    <div>
+        {% for category in settingCategories %}
+            <a class="badge badge-primary" href="{{ path('admin_setting_list', {'category' : category.settingCategoryName}) }}">{{ category.settingCategoryName }}</a>
+        {% endfor %}
+    </div>
+
+    <div>
+        <h1 class="float-left"> Settings </h1>
+        <a class="btn btn-primary float-right" href="{{ path('admin_setting_new') }}" role="button">Add Setting</a>
+    </div>
+
+    <table class="table">
+        <thead class="thead-light">
+            <tr>
+                <th>{{ knp_pagination_sortable(settings, '#', 'settings.setting_id') }}</th>
+                <th>{{ knp_pagination_sortable(settings, 'Key', 'settings.setting_key') }}</th>
+                <th>Category</th>
+                <th>Description</th>
+                <th>Value</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for setting in settings %}
+            <tr>
+                <td>{{ setting.settingId }}</td>
+                <td><a class="badge badge-info" href="{{ path('admin_setting_edit', {'key' : setting.settingKey}) }}">{{ setting.settingKey }}</a></td>
+                <td>{{ setting.settingCategory.settingCategoryName }}</td>
+                <td>{{ setting.settingValue }}</td>
+                <td>{{ setting.settingValue }}</td>
+                <td><a href="{{ path('admin_setting_delete', {'key' : setting.settingKey}) }}">Delete</a></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="navigation">
+        {{ knp_pagination_render(settings) }}
+    </div>
+{% endblock %}

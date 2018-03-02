@@ -1,16 +1,15 @@
-{{ include('admin/base.html.twig') }}
+{% extends 'admin/base.html.twig' %}
 
 {% block title %}User list{% endblock %}
 
 {% block body %}
-    <table>
-        <thead>
+    <table class="table">
+        <thead class="thead-light">
             <tr>
                 <th>{{ knp_pagination_sortable(users, '#', 'users.user_id') }}</th>
                 <th>Superior Role</th>
                 <th>Activated</th>
-                <th>{{ knp_pagination_sortable(users, 'Username', 'users.username') }}Username</th>
-                <th>Email</th>
+                <th>{{ knp_pagination_sortable(users, 'Username', 'users.username') }}</th>
                 <th>Roles</th>
                 <th>Type</th>
                 <th>Twitch ID</th>
@@ -23,23 +22,41 @@
         <tbody>
             {% for user in users %}
                 <tr>
-                    <td>{{ user.userId }}
+                    <td>
+                        {% if user.isActiveNow() %}
+                            <span class="badge badge-success">{{ user.userId }}</span>
+                        {% else %}
+                            <span class="badge badge-light">{{ user.userId }}</span>
+                        {% endif %}
                     </td>
                     <td>
                         {% if user.SuperAdmin() %}
-                            <tag class="super-admin">Super Admin</tag>
+                            <span class="badge badge-info">Super Admin</span>
                         {% endif %}
                         {% if user.admin() %}
-                            <tag class="admin">Admin</tag>
+                            <span class="badge badge-danger">Admin</span>
                         {% endif %}
                         {% if user.mod() %}
-                            <tag class="mod">Mod</tag>
+                            <span class="badge badge-warning">Mod</span>
                         {% endif %}
                     </td>
-                    <td>{{ user.activated }}</td>
+                    <td>
+                        {% if user.activated == 0 %}
+                            <span class="badge badge-light">Unverified</span>
+                        {% endif %}
+                        {% if user.activated == 1 %}
+                            <span class="badge badge-success">Verified</span>
+                        {% endif %}
+                        {% if user.activated == 2 %}
+                            <span class="badge badge-warning">Banned</span>
+                        {% endif %}
+                    </td>
                     <td><a href="{{ path("admin_user_view", {'user' : user.username}) }}">{{ user.username }}</a></td>
-                    <td>{{ user.email }}</td>
-                    <td>{% for role in user.roles %}{{ role }} | {% endfor %}</td>
+                    <td>
+                        {% for role in user.roles %}
+                            <span class="badge badge-light">{{ role }}</span>
+                        {% endfor %}
+                    </td>
                     <td>{{ user.type }}</td>
                     <td>{{ user.tid }}</td>
                     <td>{{ user.profile.profileSubplan }}</td>

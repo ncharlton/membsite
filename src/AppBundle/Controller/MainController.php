@@ -4,9 +4,11 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\News;
 use AppBundle\Repository\NewsRepository;
+use AppBundle\Service\SettingService;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 
 class MainController extends Controller
@@ -29,5 +31,20 @@ class MainController extends Controller
         return $this->render('main/index.html.twig', [
             'news' => $news
         ]);
+    }
+
+    /**
+     * @Route("/closed", name="main_closed")
+     */
+    public function closedAction() {
+        die("site closed");
+    }
+
+    /**
+     * @Route("/testsetting")
+     */
+    public function testAction(SettingService $settingService) {
+       $setting = $settingService->fetchSetting('abc');
+       return new Response($setting);
     }
 }

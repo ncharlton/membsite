@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Clip;
 use AppBundle\Form\ClipForm;
+use AppBundle\Service\SettingService;
 use AppBundle\Service\TwitchService;
 use Knp\Component\Pager\Paginator;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -123,7 +124,7 @@ class ClipController extends Controller
      * @Route("/clip/my", name="clip_my")
      * @Security("has_role('ROLE_USER')")
      */
-    public function myAction() {
+    public function myAction(Request $request, SettingService $settingService) {
         $user = $this->get('security.token_storage')
             ->getToken()
             ->getUser();
@@ -133,8 +134,18 @@ class ClipController extends Controller
                 array('author' => $user)
             );
 
-        return $this->render("clip/index.html.twig", [
-            "clips" => $clips
+        /**
+         * @var Paginator
+         */
+        $paginator = $this->get('knp_paginator');
+        $result = $paginator->paginate(
+            $clips,
+            $request->query->getInt('page', 1),
+            $request->query->getInt('limit', $settingService->fetchSetting('clip_per_page'))
+        );
+
+        return $this->render("clip/my.html.twig", [
+            "clips" => $result
         ]);
     }
 

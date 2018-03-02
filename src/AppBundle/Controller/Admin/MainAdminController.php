@@ -4,6 +4,7 @@ namespace AppBundle\Controller\Admin;
 
 use AppBundle\Entity\News;
 use AppBundle\Form\Admin\NewsAdminForm;
+use AppBundle\Repository\UserRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,12 +19,17 @@ class MainAdminController extends Controller
      */
     public function indexAction()
     {
+        $activeUsers = $this->getDoctrine()
+            ->getRepository('AppBundle:User')
+            ->getActiveUsers();
+
         $user = $this->get("security.token_storage")
             ->getToken()
             ->getUser();
 
         return $this->render('admin/main/index.html.twig', [
-            'user' => $user
+            'user' => $user,
+            'activeUsers' => $activeUsers
         ]);
     }
 

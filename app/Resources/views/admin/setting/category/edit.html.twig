@@ -1,0 +1,17 @@
+{% extends ':admin:base.html.twig' %}
+
+{% block title %}Edit setting category - {{ settingCategory.settingCategoryName }}{% endblock %}
+
+{% block body %}
+    {{ form_start(form) }}
+    <div class="form-group">
+        <label for="Setting Category Name">{{ form_label(form.settingCategoryName, 'Setting Category Name') }}</label>
+        {{ form_widget(form.settingCategoryName, {'attr': {'class': 'form-control'}}) }}
+
+        <label for="Setting Category Description">{{ form_label(form.settingCategoryDescription, 'Setting Category Description') }}</label>
+        {{ form_widget(form.settingCategoryDescription, {'attr': {'class': 'form-control'}}) }}
+    </div>
+
+    <button type="submit" class="btn btn-primary">Edit Setting Category</button>
+    {{ form_end(form) }}
+{% endblock %}

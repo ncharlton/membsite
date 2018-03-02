@@ -17,7 +17,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use AppBundle\Entity\Profile;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\UserRepository")
  * @ORM\Table(name="user")
  * @ORM\HasLifecycleCallbacks()
  * @UniqueEntity("username")
@@ -115,6 +115,27 @@ class User implements UserInterface
      * @Gedmo\Timestampable(on="update")
      */
     private $updated_at;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    protected $last_active;
+
+    /**
+     * @return \DateTime
+     */
+    public function getLastActive()
+    {
+        return $this->last_active;
+    }
+
+    /**
+     * @param \DateTime $last_active
+     */
+    public function setLastActive($last_active): void
+    {
+        $this->last_active = $last_active;
+    }
 
 
     /**
@@ -425,4 +446,15 @@ class User implements UserInterface
             else return false;
         }
     }
+
+    /**
+     * @return bool Whether the user is active or not
+     */
+    public function isActiveNow() {
+        $delay = new \DateTime('2 minutes ago');
+
+        return ($this->getLastActive() > $delay);
+    }
+
+
 }

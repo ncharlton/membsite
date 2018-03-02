@@ -1,0 +1,32 @@
+{% extends "admin/base.html.twig" %}
+
+{% block title %}Settings{% endblock %}
+
+{% block body %}
+    <div>
+        <h1 class="float-left"> Setting Categories </h1>
+        <a class="btn btn-primary float-right" href="{{ path('admin_setting_category_new') }}" role="button">Add Setting Category</a>
+    </div>
+
+    <table class="table">
+        <thead class="thead-light">
+        <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for settingCategory in settingCategories %}
+            <tr>
+                <td>{{ settingCategory.settingCategoryId }}</td>
+                <td><a href="{{ path("admin_setting_category_edit", {'category' : settingCategory.settingCategoryName }) }}">{{ settingCategory.settingCategoryName }}</a></td>
+                <td>{{ settingCategory.settingCategoryDescription }}</td>
+                <td><a href="{{ path('admin_setting_category_delete', {'category' : settingCategory.settingCategoryName}) }}">Delete</a></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

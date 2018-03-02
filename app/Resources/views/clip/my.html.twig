@@ -1,8 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Clips{% endblock %}
+{% block title %}My Clips{% endblock %}
 
 {% block body %}
+    <h1>My Clips</h1>
     {% for clip in clips %}
         <div class="card" style="width: 18rem;">
             <img src="{{ clip.clipThumbnailSmall }}" title="{{ clip.clipName }}" class="card-img-top">

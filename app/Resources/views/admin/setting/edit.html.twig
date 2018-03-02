@@ -1,0 +1,23 @@
+{% extends ':admin:base.html.twig' %}
+{% block title %}Edit Setting - {{ setting.settingKey }}{% endblock %}
+
+{% block body %}
+    {{ form_start(form) }}
+    <div class="form-group">
+        <label for="Setting Key">{{ form_label(form.settingKey, 'Setting Key') }}</label>
+        {{ form_widget(form.settingKey, {'attr': {'class': 'form-control'}}) }}
+
+        <label for="Setting Value">{{ form_label(form.settingValue, 'Setting Value') }}</label>
+        {{ form_widget(form.settingValue, {'attr': {'class': 'form-control'}}) }}
+
+        <label for="Setting Description">{{ form_label(form.settingDescription, 'Setting Description') }}</label>
+        {{ form_widget(form.settingDescription, {'attr': {'class': 'form-control'}}) }}
+
+        <label for="Setting Category">{{ form_label(form.settingCategory, 'Setting Category') }}</label>
+        {{ form_widget(form.settingCategory, {'attr': {'class': 'form-control'}}) }}
+
+    </div>
+
+    <button type="submit" class="btn btn-primary">Edit Setting</button>
+    {{ form_end(form) }}
+{% endblock %}
