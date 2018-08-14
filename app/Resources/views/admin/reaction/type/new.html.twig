@@ -1,0 +1,20 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}New reaction type{% endblock %}
+
+{% block body %}
+    <h1>New reaction type</h1>
+    <br>
+    {{ form_start(form) }}
+    <div class="form-group">
+        <label for="Reaction type name">{{ form_label(form.reactionTypeName, 'Reaction type name') }}</label>
+        {{ form_widget(form.reactionTypeName, {'attr': {'class': 'form-control'}}) }}
+
+        <label for="Reaction type icon">{{ form_label(form.reactionTypeIcon, 'Reaction type icon') }}</label>
+        {{ form_widget(form.reactionTypeIcon, {'attr': {'class': 'form-control'}}) }}
+        {{ form_row(form._token) }}
+
+        <br>
+        <button type="submit">New reaction type</button>
+    </div>
+{% endblock %}

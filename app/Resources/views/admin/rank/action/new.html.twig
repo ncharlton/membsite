@@ -1,0 +1,26 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}New rank action{% endblock %}
+
+{% block body %}
+    <h1>New rank action</h1>
+    <br>
+    {{ form_start(form) }}
+    <div class="form-group">
+        <label for="Rank action name">{{ form_label(form.rankActionName, 'Rank action name') }}</label>
+        {{ form_widget(form.rankActionName, {'attr': {'class': 'form-control'}}) }}
+
+        <label for="Rank action score">{{ form_label(form.rankActionScore, 'Rank action score') }}</label>
+        {{ form_widget(form.rankActionScore, {'attr': {'class': 'form-control'}}) }}
+
+        <label for="Rank action description">{{ form_label(form.rankActionDescription, 'Rank action description') }}</label>
+        {{ form_widget(form.rankActionDescription, {'attr': {'class': 'form-control'}}) }}
+
+        <label for="Rank action message">{{ form_label(form.rankActionMessage, 'Rank action message') }}</label>
+        {{ form_widget(form.rankActionMessage, {'attr': {'class': 'form-control'}}) }}
+
+        <br>
+        {{ form_row(form._token) }}
+        <button type="submit">New rank action</button>
+    </div>
+{% endblock %}

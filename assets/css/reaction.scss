@@ -1,0 +1,33 @@
+.reaction-bar {
+  margin: 10px 0;
+  height: 36px;
+  transition: all .2s ease-in;
+
+  & :hover {
+    cursor: pointer;
+    background: #eee;
+  }
+
+
+}
+
+.reaction {
+  display: inline-block;
+  padding: 1px 5px;
+  margin: 3px;
+  float: left;
+  background: #f9f9f9;
+  border-radius: 3px;
+
+    & .reaction-count {
+      font-size: 14px;
+      position: relative;
+      top: 1px;
+      color: #777;
+    }
+
+
+  & img {
+    height: 20px;
+  }
+}

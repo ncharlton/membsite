@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <section id="clips">
+        <header>
+            <h2 class="title">New Clips</h2>
+            <a href="{{ path("clip_index") }}">All Clips</a>
+        </header>
+        <div class="clips-preview">
+            <div class="row">
+                {% for clip in clips %}
+                    <div class="col-sm-4">
+                        <div class="card clip">
+                            <img src="{{ clip.clipThumbnailSmall }}" title="{{ clip.clipName }}" class="card-img-top">
+                            <h5 class="card-title"><a href="{{ path('clip_view', {'slug' : clip.clipSlug }) }}">{{ clip.clipName }}</a></h5>
+                            <div class="card-body">
+                                <reaction-bar item="clip" item-id="{{ clip.clipId }}" user-id="{{ app.user ? app.user.userId : 'null' }}" ></reaction-bar>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <section id="news">
+        <h2 class="title">News</h2>
+        <article class="news-article">
+            {% for n in news %}
+                <header><a href="{{ path("news_view", {"slug" : n.newsSlug}) }}">{{ n.newsTitle }}</a></header>
+                <section>
+                    <img />
+                    {{ n.newsContent | slice(0, 300) | raw }} ...
+                    <br>
+                    <reaction-bar item="news" item-id="{{ n.newsId }}" user-id="{{ app.user ? app.user.userId : 'null' }}"></reaction-bar>
+                </section>
+            {% endfor %}
+        </article>
+    </section>
+{% endblock %}

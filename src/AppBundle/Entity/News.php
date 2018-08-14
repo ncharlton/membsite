@@ -58,7 +58,7 @@ class News
 
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="text")
      * @Assert\NotBlank()
      */
     private $news_content;
@@ -212,4 +212,6 @@ class News
     {
         $this->updated_at = $updated_at;
     }
+
+
 }

@@ -1,0 +1,38 @@
+.comment {
+  background: #fafafa;
+  margin: 15px 0;
+  padding: 15px;
+  font-size: 12px;
+}
+
+.commentBox {
+  & textarea {
+    border: 1px solid #eee;
+    border-radius: 5px;
+    padding: 5px;
+    width: 100%;
+  }
+
+  & input {
+    & .commentSubmit {
+      border: 0;
+      padding: 7px 30px;
+      color: white;
+      font-weight: bold;
+      background: #0d5aa7;
+    }
+  }
+}
+
+button.commentLoader {
+  width: 100%;
+  background: #0f476c;
+  padding: 10px;
+  text-align: center;
+  color: white;
+  font-weight: bold;
+  font-size: 14px;
+  margin: 20px 0;
+  border: 0px;
+  border-radius: 5px;
+}

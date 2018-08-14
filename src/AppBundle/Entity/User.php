@@ -33,21 +33,49 @@ class User implements UserInterface
     private $user_id;
 
     /**
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Profile")
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Profile", fetch="EAGER")
      * @ORM\JoinColumn(name="profile", referencedColumnName="profile_id", onDelete="CASCADE")
      */
     protected $profile;
 
     /**
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\News", mappedBy="author")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\News", mappedBy="author", fetch="LAZY")
      * @ORM\OrderBy({"created_at" = "DESC"})
      */
     protected $news;
 
     /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Comment", mappedBy="user", fetch="EXTRA_LAZY")
+     * @ORM\OrderBy({"created_at" = "DESC"})
+     */
+    protected $comments;
+
+
+    /**
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Rank")
+     * @ORM\JoinColumn(name="rank", referencedColumnName="rank_id")
+     */
+    private $rank;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $score;
+
+    /**
      * @ORM\Column(type="integer")
      */
     private $activated;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $ban_time;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $ban_reason;
 
     /**
      * @ORM\Column(type="string")
@@ -111,13 +139,13 @@ class User implements UserInterface
     private $created_at;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=true)
      * @Gedmo\Timestampable(on="update")
      */
     private $updated_at;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=true)
      */
     protected $last_active;
 
@@ -137,6 +165,21 @@ class User implements UserInterface
         $this->last_active = $last_active;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getScore()
+    {
+        return $this->score;
+    }
+
+    /**
+     * @param mixed $score
+     */
+    public function setScore($score): void
+    {
+        $this->score = $score;
+    }
 
     /**
      * @return mixed
@@ -331,7 +374,7 @@ class User implements UserInterface
     }
 
     /**
-     * @return mixed
+     * @return Profile
      */
     public function getProfile()
     {
@@ -350,11 +393,19 @@ class User implements UserInterface
     }
 
     /**
-     * @return ArrayCollection|News[]
+     * @return mixed
      */
-    public function getNews()
+    public function getRank()
     {
-        return $this->news;
+        return $this->rank;
+    }
+
+    /**
+     * @param mixed $rank
+     */
+    public function setRank(Rank $rank): void
+    {
+        $this->rank = $rank;
     }
 
 
@@ -388,6 +439,38 @@ class User implements UserInterface
             return 'ROLE_MOD';
         else
             return 'ROLE_USER';
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getBanTime()
+    {
+        return $this->ban_time;
+    }
+
+    /**
+     * @param mixed $ban_time
+     */
+    public function setBanTime($ban_time): void
+    {
+        $this->ban_time = $ban_time;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getBanReason()
+    {
+        return $this->ban_reason;
+    }
+
+    /**
+     * @param mixed $ban_reason
+     */
+    public function setBanReason($ban_reason): void
+    {
+        $this->ban_reason = $ban_reason;
     }
 
     /**
@@ -456,5 +539,26 @@ class User implements UserInterface
         return ($this->getLastActive() > $delay);
     }
 
+    public function isBanned() {
+        if($this->getActivated() == 2) {
+            return true;
+        } else
+            return false;
+    }
 
+    public function unban() {
+        $this->setBanReason('');
+        $this->setBanTime(null);
+        $this->setActivated(1);
+    }
+
+    public function checkBan() {
+        $now = new \DateTime();
+
+        if($this->getBanTime() < $now) {
+            return false;
+        } else {
+            return true;
+        }
+    }
 }

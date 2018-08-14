@@ -34,7 +34,7 @@ class Profile
     private $profile_bio;
 
     /**
-     * @ORM\Column(type="string", nullable=true)
+     * @ORM\Column(type="boolean", nullable=true)
      */
     private $profile_issub;
 
@@ -105,9 +105,9 @@ class Profile
     }
 
     /**
-     * @param mixed $profile_issub
+     * @param boolean $profile_issub
      */
-    public function setProfileIssub($profile_issub = 0)
+    public function setProfileIssub($profile_issub = false)
     {
         $this->profile_issub = $profile_issub;
     }
@@ -143,4 +143,4 @@ class Profile
     {
         $this->profile_subsince = $profile_subsince;
     }
-    }
+}

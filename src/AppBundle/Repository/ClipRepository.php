@@ -23,4 +23,16 @@ class ClipRepository extends EntityRepository
             ->execute();
     }
 
+    /**
+     * @param int $limit
+     * @return Clip[]
+     */
+    public function fetchNewestClips($limit = 3) {
+        return $this->createQueryBuilder('clip')
+            ->orderBy('clip.clip_created_at', 'DESC')
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->execute();
+    }
+
 }

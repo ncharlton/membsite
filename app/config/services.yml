@@ -4,6 +4,10 @@ parameters:
     #parameter_name: value
     activity_listerner.class: AppBundle\EventListener\ActivityListener
     status_listener.class: AppBundle\EventListener\StatusListener
+    ban_listener.class: AppBundle\EventListener\BanListener
+
+    rank_images_dir: '%kernel.project_dir%/web/images/rank'
+    reaction_images_dir: '%kernel.project_dir%/web/images/reaction'
 
 services:
     # default configuration for services in *this* file
@@ -36,8 +40,6 @@ services:
     #     arguments:
     #         $someArgument: 'some_value'
 
-
-
     AppBundle\Doctrine\HashPasswordListener:
         tags: [doctrine.event_subscriber]
 
@@ -49,13 +51,19 @@ services:
             $twitchChannelId: '2400710'
 
     activity_listener:
-        class: %activity_listerner.class%
+        class: '%activity_listerner.class%'
         arguments: ["@security.token_storage", "@doctrine.orm.entity_manager"]
         tags:
             - { name: kernel.event_listener, event: kernel.controller, method: onCoreController }
 
     status_listener:
-        class: %status_listener.class%
+        class: '%status_listener.class%'
         arguments: ['@AppBundle\Service\SettingService']
         tags:
              - { name: kernel.event_listener, event: kernel.request, method: onCoreController }
+
+    ban_listener:
+        class: '%ban_listener.class%'
+        arguments: ["@security.token_storage", "@doctrine.orm.entity_manager"]
+        tags:
+            - { name: kernel.event_listener, event: kernel.request, method: onCoreController}

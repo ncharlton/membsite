@@ -1,0 +1,19 @@
+.news-article {
+  & img {
+    display: block;
+    max-width: 100% !important;
+    max-height: 500px !important;
+    width: auto;
+    height: auto;
+  }
+}
+
+.news-article-information {
+  margin: 10px 0;
+
+  & .date {
+    font-size: 12px;
+    font-weight: bold;
+  }
+
+}

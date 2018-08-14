@@ -47,11 +47,11 @@ class TwitchUserProvider implements UserProviderInterface
 
         $sub = $this->twitchService->checkIfSub($twitchUser['twitchUserId'], $accessToken);
         if($sub) {
-            $profile->setProfileIssub(1);
+            $profile->setProfileIssub(true);
             $profile->setProfileSubplan($sub['subPlan']);
             $profile->setProfileSubsince($sub['subSince']);
         } else {
-            $profile->setProfileIssub(0);
+            $profile->setProfileIssub(false);
         }
 
         $user = new User();

@@ -1,0 +1,32 @@
+{% extends "admin/base.html.twig" %}
+
+{% block title %}Reaction types{% endblock %}
+
+{% block body %}
+    <div>
+        <h1 class="float-left">Reaction types</h1>
+        <a class="btn btn-primary float-right" href="{{ path('admin_reaction_type_new') }}" role="button">New reaction type</a>
+    </div>
+
+    <table class="table">
+        <thead class="thead-light">
+        <tr>
+            <th>#</th>
+            <th>Reaction type name</th>
+            <th>Reaction type icon</th>
+            <th>Reaction type actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for reactionType in reactionTypes %}
+            <tr>
+                <td>{{ reactionType.reactionTypeId }}</td>
+                <td>{{ reactionType.reactionTypeName }}</td>
+                <td><img src="{{ asset('images/reaction/' ~ reactionType.reactionTypeIcon) }}"></td>
+                <td><a href="{{ path('admin_reaction_type_delete', {'type' : reactionType.reactionTypeName}) }}">Delete</a></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Clip - {{ clip.clipName }}{% endblock %}
+
+{% block body %}
+    <h1>{{ clip.clipName }}</h1>
+
+    <iframe src="{{ clip.clipEmbedUrl }}" class="clip-frame"></iframe>
+    Posted by <a href="{{ path("user_view", {"user" : clip.author.username}) }}">{{ clip.author.username }}</a>
+
+    <reaction-bar item="clip" item-id="{{ clip.clipId }}" user-id="{{ app.user ? app.user.userId : 'null' }}"></reaction-bar>
+    <hr>
+    <comment-bar item="clip" item-id="{{ clip.clipId }}" user-id="{{ app.user ? app.user.userId : 'null' }}"></comment-bar>
+{% endblock %}
+
+{% block aside %}
+    Posted by <a href="{{ path("user_view", {"user" : clip.author.username}) }}">{{ clip.author.username }}</a>
+{% endblock %}

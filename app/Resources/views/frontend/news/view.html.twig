@@ -1,0 +1,21 @@
+{% extends "base.html.twig" %}
+
+{% block keywords %}{{ news.newsKeywords }}{% endblock %}
+{% block title %}{{ news.newsTitle }}{% endblock %}
+
+
+{% block body %}
+    <h1>{{ news.newsTitle }}</h1>
+    <div class="news-article-information">
+        <p class="date">{{ news.createdAt | date("F j, Y") }}</p>
+
+    </div>
+
+    <div class="news-article">
+        {{ news.newsContent | raw }}
+    </div>
+
+    <reaction-bar item="news" item-id="{{ news.newsId }}" user-id="{{ app.user ? app.user.userId : null }}"></reaction-bar>
+    <hr>
+    <comment-bar item="news" item-id="{{ news.newsId }}" user-id="{{ app.user ? app.user.userId : null }}"></comment-bar>
+{% endblock %}

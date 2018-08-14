@@ -1,0 +1,10 @@
+// assets/css/global.scss
+
+// the ~ allows you to reference things in node_modules
+@import '~bootstrap/scss/bootstrap.scss';
+@import "reaction";
+@import "clip";
+@import "news";
+@import "comments";
+@import "animations";
+

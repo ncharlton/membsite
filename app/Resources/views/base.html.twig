@@ -1,7 +1,12 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta charset="UTF-8" />
+        <meta charset="UTF-8">
+        <meta name="description" content="{% block description %}Description{% endblock %}">
+        <meta name="keywords" content="{% block keywords %}MembTV, 2018, website{% endblock %}">
+        <meta name="author" content="John Doe">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
         <title>{% block title %}Welcome!{% endblock %}</title>
 
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
@@ -9,32 +14,178 @@
         {% block stylesheets %}
             <link rel="stylesheet" type="text/css" href="{{ asset('css/bootstrap/bootstrap.min.css') }}">
             <link rel="stylesheet" type="text/css" href="{{ asset('css/main.css') }}">
+            <link rel="stylesheet" type="text/css" href="{{ asset('build/app.css') }}">
         {% endblock %}
     </head>
     <body>
-        <header>
-            {% if app.user %}
-                <a href="{{ path("security_logout") }}">Logout</a>
+        <header id="header">
+            <div class="top-bar">
+                <div class="container">
+                    <span class="game-text">Age of Empires I</span>
+                    <div id="social-media">
+                        <div class="social-block twitter tint">
+                            <!--<i class="fab fa-twitter"></i>-->
+                        </div>
+                        <div class="social-block twitch tint">
+                            <!--<i class="fab fa-twitch"></i>-->
+                        </div>
+                        <div class="social-block facebook tint">
+                            <!--<i class="fab fa-facebook-f"></i>-->
+                        </div>
+                        <div class="social-block youtube tint">
+                            <!--<i class="fab fa-youtube"></i>-->
+                        </div>
+                    </div>
+                    <span class="game-text">Age of Empires II</span>
+                </div>
+            </div>
+            <div class="bottom-bar">
+                <div class="container">
+                    <a class="memb-logo" href="/">Memb</a>
+                    <nav class="nav-links">
+                        <ul class="links">
+                            {% if app.user %}
+                                <li><a href="{{ path("security_logout") }}">Logout</a></li>
+                                <li><a href="{{ path("user_view", {'user' : app.user.username }) }}">{{ app.user.username }}</a></li>
+                                {% if app.user.isSuperAdmin or app.user.isAdmin %}
+                                    <li><a href="{{ path("admin_main_index") }}">Admin</a></li>
+                                {% endif %}
+                                <li><a href="{{ path('clip_new') }}">Add Clip</a></li>
+                                <li><a href="{{ path("clip_index") }}">Clips</a></li>
+                                <li><a href="{{ path("clip_my") }}">My Clips</a></li>
 
-                {% if app.user.isSuperAdmin or app.user.isAdmin %}
-                    <a href="{{ path("admin_main_index") }}">Admin Dashboard</a>
-                {% endif %}
-
-                <a href="{{ path('clip_new') }}">Add Clip</a>
-                <a href="{{ path("clip_index") }}">Clips</a>
-                <a href="{{ path("clip_my") }}">My Clips</a>
-
-            {% else %}
-                <a href="{{ path("security_login") }}">Login</a>
-            {% endif %}
-
-
+                            {% else %}
+                                <li><a href="{{ path("security_login") }}">Login</a></li>
+                                <li><a href="{{ path("user_register") }}">Register</a></li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                </div>
+            </div>
         </header>
+        <main id="app">
+            <section class="main-content">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-9">
+                            {% block body %}{% endblock %}
+                        </div>
+                        <div class="col-md-3">
+                            {% block aside %}
+                                <aside>
+                                    <h3 class="title grayscale">Recent Matches</h3>
+                                    <div class="tourney-matches">
+                                        <h4 class="title">Memb Supporters Masters III</h4>
+                                        <div class="tourney-matches-container">
+                                            <div class="match">
+                                                <div class="outcome">
+                                                    <div class="series-count winner">
+                                                        <span>3</span>
+                                                    </div>
+                                                    <div class="user-info">
+                                    <span class="flag">
+                                        <!--<i class="flag-icon flag-icon-es"></i>-->
+                                    </span>
+                                                        <span class="username">Memb</span>
+                                                    </div>
+                                                </div>
+                                                <div class="outcome">
+                                                    <div class="series-count">
+                                                        <span>2</span>
+                                                    </div>
+                                                    <div class="user-info">
+                                    <span class="flag">
+                                        <!--<i class="flag-icon flag-icon-de"></i>-->
+                                    </span>
+                                                        <span class="username">Idefix</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="match">
+                                                <div class="outcome">
+                                                    <div class="series-count winner">
+                                                        <span>3</span>
+                                                    </div>
+                                                    <div class="user-info">
+                                    <span class="flag">
+                                        <!--<i class="flag-icon flag-icon-us"></i>-->
+                                    </span>
+                                                        <span class="username">cam_zach</span>
+                                                    </div>
+                                                </div>
+                                                <div class="outcome">
+                                                    <div class="series-count">
+                                                        <span>2</span>
+                                                    </div>
+                                                    <div class="user-info">
+                                    <span class="flag">
+                                        <!--<i class="flag-icon flag-icon-es"></i>-->
+                                    </span>
+                                                        <span class="username">Memb</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="match">
+                                                <div class="outcome">
+                                                    <div class="series-count winner">
+                                                        <span>3</span>
+                                                    </div>
+                                                    <div class="user-info">
+                                    <span class="flag">
+                                        <!--<i class="flag-icon flag-icon-us"></i>-->
+                                    </span>
+                                                        <span class="username">cam_zach</span>
+                                                    </div>
+                                                </div>
+                                                <div class="outcome">
+                                                    <div class="series-count">
+                                                        <span>2</span>
+                                                    </div>
+                                                    <div class="user-info">
+                                    <span class="flag">
+                                        <!--<i class="flag-icon flag-icon-de"></i>-->
+                                    </span>
+                                                        <span class="username">Idefix</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="match">
+                                                <div class="outcome">
+                                                    <div class="series-count winner">
+                                                        <span>3</span>
+                                                    </div>
+                                                    <div class="user-info">
+                                    <span class="flag">
+                                        <!--<i class="flag-icon flag-icon-de"></i>-->
+                                    </span>
+                                                        <span class="username">sh4rky100</span>
+                                                    </div>
+                                                </div>
+                                                <div class="outcome">
+                                                    <div class="series-count">
+                                                        <span>2</span>
+                                                    </div>
+                                                    <div class="user-info">
+                                    <span class="flag">
+                                       <!-- <i class="flag-icon flag-icon-de"></i>-->
+                                    </span>
+                                                        <span class="username">Memb</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </aside>
+                            {% endblock %}
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
 
-        <hr>
-        {% block body %}{% endblock %}
         {% block javascripts %}
-            <script type="text/javascript" src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
+            <!--<link rel="modulepreload" href="{{ asset('build/app.js') }}">-->
+            <script type="text/javascript" src="{{ asset('build/app.js') }}"></script>
         {% endblock %}
     </body>
 </html>

@@ -7,9 +7,7 @@
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
 
         {% block stylesheets %}
-            <link rel="stylesheet" type="text/css" href="{{ asset('css/bootstrap/bootstrap.min.css') }}">
-            <link rel="stylesheet" type="text/css" href="{{ asset('bundles/open-iconic-master/font/css/open-iconic-bootstrap.css') }}" rel="stylesheet">
-            <link rel="stylesheet" type="text/css" href="{{ asset('css/admin.css') }}">
+            <link rel="stylesheet" type="text/css" href="{{ asset('build/admin.css') }}">
         {% endblock %}
     </head>
     <body>
@@ -23,6 +21,9 @@
                     <li><a href="{{ path('admin_game_index') }}">Games</a></li>
                     <li><a href="{{ path('admin_news_index') }}">News</a></li>
                     <li><a href="{{ path('admin_clip_index') }}">Clips</a></li>
+                    <li><a href="{{ path('admin_rank_index') }}">Ranks</a></li>
+                    <li><a href="{{ path('admin_rank_action_index') }}">Rank actions</a></li>
+                    <li><a href="{{ path('admin_reaction_type_index') }}">Reaction types</a></li>
                     <li><a href="{{ path('security_logout') }}">Logout</a> </li>
                 </ul>
             </header>

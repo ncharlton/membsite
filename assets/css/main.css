@@ -1,0 +1,417 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    font-family: 'Lato', sans-serif;
+}
+
+body {
+    background-color: #ffffff;
+}
+
+.title {
+    margin: 0;
+    font-family: 'Slabo 27px', serif;
+}
+
+.grayscale {
+    color: #777777;
+}
+
+#header {
+    height: 95px;
+}
+
+#header .top-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 35px;
+    background-color: #173143;
+}
+
+#header .top-bar .container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+#header .top-bar .game-text {
+    font-weight: 300;
+    color: #ffffff;
+    text-transform: uppercase;
+    letter-spacing: -1px;
+    font-family: 'Roboto Condensed', sans-serif;
+}
+
+#header .bottom-bar {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: 60px;
+    background-color: #0F476C;
+}
+
+#header .bottom-bar .container {
+    display: inline-flex;
+    justify-content: space-between;
+    height: 100%;
+    width: 100%;
+}
+
+#header .bottom-bar .memb-logo {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    align-items: center;
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 900;
+    text-transform: uppercase;
+}
+
+#header .bottom-bar .nav-links {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    justify-content: flex-end;
+}
+
+#header .bottom-bar .nav-links ul.links {
+    display: inline-flex;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+#header .bottom-bar .nav-links ul.links li {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 125px;
+}
+
+#header .bottom-bar .nav-links ul.links li a {
+    color: #ffffff;
+    font-weight: 300;
+    text-decoration: none;
+}
+
+#social-media {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: auto;
+    height: 100%;
+    margin: 0 15px;
+}
+
+#social-media .social-block {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 45px;
+    cursor: pointer;
+}
+
+.tint:before {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(255,255,255, 0.1);
+    transition: all .2s ease-in;
+}
+
+.tint:hover:before {
+    background: none;
+}
+
+#social-media .social-block i {
+    color: #ffffff;
+}
+
+.social-block.twitter {
+    background-color: #1dcaff;
+}
+
+.social-block.twitch {
+    background-color: #6441a5;
+}
+
+.social-block.facebook {
+    background-color: #3b5998;
+}
+
+.social-block.youtube {
+    background-color: #ff0000;
+}
+
+main section {
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    width: 100%;
+}
+
+.main-content {
+    display: inline-flex;
+    flex-direction: row;
+}
+
+.main-content .left {
+    height: auto;
+    width: calc(100% - 300px);
+}
+
+.main-content aside {
+    width: 300px
+}
+
+#banner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 30px 0;
+    height: 250px;
+}
+
+#banner .container {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    background-color: #11B7E1; /* this should really be transparent when there is a real image */
+}
+
+#banner .image {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    z-index: 1;
+}
+
+#banner .countdown-container {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+#banner .countdown {
+    display: flex;
+    position: absolute;
+    z-index: 2;
+}
+
+.countdown {
+    display: inline-flex;
+    justify-content: center;
+    width: 50%;
+    height: 50%;
+    background-color: transparent;
+}
+
+.countdown .countdown-section {
+    display: flex;
+    flex-direction: column;
+}
+
+.countdown .countdown-section:nth-child(2) {
+    margin: 0 15px;
+}
+
+.countdown .countdown-section .label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    text-transform: uppercase;
+    font-size: 1.2em;
+    margin-bottom: 10px;
+}
+
+.countdown .countdown-section .date {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Roboto Condensed', sans-serif;
+}
+
+.countdown .countdown-section .date .countdown-card {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #ffffff;
+    color: #000000;
+    font-size: 4.5em;
+    border: 1px solid #eee;
+    width: 75px;
+}
+
+.countdown .countdown-section .countdown-card:last-child {
+    margin-left: 2px;
+}
+
+#clips {
+    height: 325px;
+    margin-bottom: 30px;
+}
+
+#clips .container {
+    width: 100%;
+    height: 100%;
+    justify-content: flex-start;
+    flex-direction: column;
+}
+
+#clips header {
+    display: inline-flex;
+    justify-content: space-between;
+    flex-shrink: 0;
+    width: 100%;
+    height: 50px;
+}
+
+#clips header a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    margin-right: 20px;
+    height: 30px;
+    width: auto;
+    padding: 0 10px;
+    background-color: #f2f2f2;
+    font-size: 0.9em;
+    color: #aaaaaa;
+    transition: color 0.2s ease-in;
+}
+
+#clips header a:hover {
+    color: #0F476C;
+}
+
+#clips .clips-preview {
+    display: inline-flex;
+    height: 100%;
+    width: 100%;
+}
+
+#clips .clips-preview .clip {
+    position: relative;
+    display: flex;
+    height: 100%;
+    width: calc(50% - 10px);
+}
+
+#clips .clips-preview .clip:first-child {
+    margin-right: 10px;
+}
+
+#clips .clips-preview .clip iframe {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    z-index: 1;
+}
+
+#news {
+    height: auto;
+}
+
+#news .container {
+    width: 100%;
+    height: 100%;
+    justify-content: flex-start;
+    flex-direction: column;
+}
+
+.tourney-matches-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.tourney-matches-container .match {
+    display: flex;
+    height: 70px;
+    flex-direction: column;
+    margin: 10px 0;
+}
+
+.tourney-matches-container .match .outcome {
+    display: inline-flex;
+    height: 35px;
+    width: 100%;
+    background-color: #eeeeee;
+    opacity: 0.8;
+}
+
+.tourney-matches-container .match .outcome:nth-child(2n+1) {
+    background-color: #f8f8f8;
+}
+
+.tourney-matches-container .match .outcome .series-count {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 40px;
+    background-color: #eeeeee;
+    color: #aaaaaa;
+}
+
+.series-count.winner {
+    font-weight: 700;
+    color: #105380 !important;
+    background-color: #FCD418 !important;
+    font-size: 1.1em;
+}
+
+.tourney-matches-container .match .outcome .user-info {
+    display: flex;
+    align-items: center;
+    background-color: inherit;
+    padding-right: 10px;
+}
+
+.tourney-matches-container .match .outcome .user-info .flag {
+    margin: 0 10px;
+}
+
+/*
+* Flags stuff
+ */
+
+.flag-icon {
+    background-size: contain;
+    background-position: 50%;
+    background-repeat: no-repeat;
+    position: relative;
+    display: inline-block;
+    width: 1.33333333em;
+    line-height: 1em;
+}
+
+.flag-icon:before {
+    content: "\00a0";
+}
+
+.flag-icon-de {
+    background-image: url(./flags/4x3/de.svg);
+}
+
+.flag-icon-es {
+    background-image: url(./flags/4x3/es.svg);
+}
+
+.flag-icon-us {
+    background-image: url(./flags/4x3/us.svg);
+}

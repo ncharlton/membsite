@@ -10,7 +10,7 @@
                 <th>Superior Role</th>
                 <th>Activated</th>
                 <th>{{ knp_pagination_sortable(users, 'Username', 'users.username') }}</th>
-                <th>Roles</th>
+                <th>Rank</th>
                 <th>Type</th>
                 <th>Twitch ID</th>
                 <th>Twitch Sub Plan</th>
@@ -32,11 +32,11 @@
                     <td>
                         {% if user.SuperAdmin() %}
                             <span class="badge badge-info">Super Admin</span>
-                        {% endif %}
-                        {% if user.admin() %}
+
+                        {% elseif user.admin() %}
                             <span class="badge badge-danger">Admin</span>
-                        {% endif %}
-                        {% if user.mod() %}
+
+                        {% elseif user.mod() %}
                             <span class="badge badge-warning">Mod</span>
                         {% endif %}
                     </td>
@@ -52,17 +52,15 @@
                         {% endif %}
                     </td>
                     <td><a href="{{ path("admin_user_view", {'user' : user.username}) }}">{{ user.username }}</a></td>
-                    <td>
-                        {% for role in user.roles %}
-                            <span class="badge badge-light">{{ role }}</span>
-                        {% endfor %}
-                    </td>
+
+                    <td>{{ user.rank.rankName }}</td>
                     <td>{{ user.type }}</td>
                     <td>{{ user.tid }}</td>
                     <td>{{ user.profile.profileSubplan }}</td>
                     <td>{{ user.createdAt|date("m/d/Y") }}</td>
                     <td>{{ user.updatedAt|date("m/d/Y") }}</td>
                     <td>
+                        <a href="{{ path("admin_user_ban", {'user' : user.username}) }}">Ban</a>
                         <a href="{{ path("admin_user_edit", {'user' : user.username}) }}">Edit</a>
                         <a href="{{ path("admin_user_delete", {'user' : user.username}) }}">Delete</a>
                     </td>

@@ -1,0 +1,34 @@
+{% extends "admin/base.html.twig" %}
+
+{% block title %}Ranks{% endblock %}
+
+{% block body %}
+    <div>
+        <h1 class="float-left">Ranks</h1>
+        <a class="btn btn-primary float-right" href="{{ path('admin_rank_new') }}" role="button">New rank</a>
+    </div>
+
+    <table class="table">
+        <thead class="thead-light">
+        <tr>
+            <th>#</th>
+            <th>Rank name</th>
+            <th>Rank score</th>
+            <th>Rank badge</th>
+            <th>Rank actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for rank in ranks %}
+            <tr>
+                <td>{{ rank.rankId }}</td>
+                <td><a class="badge badge-info" href="{{ path('admin_rank_edit', {'rankId' : rank.rankId}) }}">{{ rank.rankName }}</a></td>
+                <td>{{ rank.rankScore }}</td>
+                <td><img src="{{ asset('images/rank/' ~ rank.rankBadge) }}"></td>
+                <td><a href="{{ path('admin_rank_delete', {'rankId' : rank.rankId}) }}">Delete</a></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

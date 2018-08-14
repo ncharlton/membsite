@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ user.username }}{% endblock %}
+{% block body %}
+    <h1>{{ user.username }}</h1>
+    <p>{{ user.email }}</p>
+    <p>{{ user.createdAt | date('m/d/Y')}}</p>
+    <p>{{ user.lastActive | date('m/d/Y') }}</p>
+    <p>{{ user.profile.profileSubplan }}</p>
+    <p>{{ user.rank.rankName }}</p>
+    <p>{{ user.profile.profileIssub }}</p>
+
+    <a href="{{ path("profile_edit_own_details") }}">Edit your credentials</a>
+{% endblock %}

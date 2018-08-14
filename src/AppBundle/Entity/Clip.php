@@ -8,7 +8,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\ClipRepository")
  * @ORM\Table(name="clip")
  * @UniqueEntity("clip_name")
  * @UniqueEntity("clip_url")

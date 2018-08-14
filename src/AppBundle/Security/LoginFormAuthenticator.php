@@ -8,7 +8,6 @@
 
 namespace AppBundle\Security;
 
-
 use AppBundle\Form\LoginForm;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;

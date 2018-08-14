@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Details{% endblock %}
+
+{% block body %}
+    {% if user.type == 'self' %}
+    {% else %}
+        You have been connected via twitch.
+
+    {% endif %}
+{% endblock %}

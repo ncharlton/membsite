@@ -4,7 +4,9 @@ namespace AppBundle\Controller\Admin;
 
 use AppBundle\Entity\User;
 use AppBundle\Form\Admin\UserAdminForm;
+use AppBundle\Form\Admin\UserBanAdminForm;
 use Doctrine\ORM\EntityRepository;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Knp\Component\Pager\Paginator;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -107,5 +109,51 @@ class UserAdminController extends Controller
         );
 
         return $this->redirectToRoute("admin_user_index");
+    }
+
+    /**
+     * @Route("/{user}/ban", name="admin_user_ban")
+     * @ParamConverter("user", options={"mapping" : {"user" : "username"}})
+     */
+    public function banAction(Request $request, User $user) {
+        $form = $this->createForm(UserBanAdminForm::class);
+
+        $form->handleRequest($request);
+        if($form->isSubmitted()) {
+            $data = $form->getData();
+            $ban_time = $data['banTime'];
+            $ban_reason = $data['banReason'];
+
+            if($ban_time == '') {
+                $ban_reason = '';
+                $user->setActivated(1);
+            } else {
+                $user->setActivated(2);
+            }
+
+            $user->setBanTime($ban_time);
+            $user->setBanReason($ban_reason);
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($user);
+            $em->flush();
+
+            if($ban_time == '') {
+                $this->addFlash(
+                    'succeess',
+                    "Ban lifted"
+                );
+            } else {
+                $this->addFlash(
+                    'succeess',
+                    "Successfully banned"
+                );
+            }
+        }
+
+        return $this->render('admin/user/ban.html.twig', [
+            'form' => $form->createView(),
+            'user' => $user
+        ]);
     }
 }

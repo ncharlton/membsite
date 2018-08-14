@@ -1,0 +1,24 @@
+{% extends 'admin/base.html.twig' %}
+{% block title %}Ban settings for {{ user.username }}{% endblock %}
+{% block body %}
+<h1>Ban settings for {{ user.username }}</h1>
+
+{% if user.banTime() is null %}
+    User is currently banned until {{ user.banTime | date("F j, Y, g:i a") }}
+    <br>
+    {{ user.banReason }}
+{% endif %}
+
+    <hr>
+    {{ form_start(form) }}
+        <div class="form-group">
+            <label for="Ban Time">{{ form_label(form.banTime, 'Ban time') }}</label>
+            {{ form_widget(form.banTime, {'attr': {'class': 'form-control'}}) }}
+
+            <label for="Ban Reason">{{ form_label(form.banReason, 'Ban reason') }}</label>
+            {{ form_widget(form.banReason, {'attr': {'class': 'form-control'}}) }}
+        </div>
+
+    <button type="submit" class="btn btn-primary">Ban action</button>
+    {{ form_end(form) }}
+{% endblock %}

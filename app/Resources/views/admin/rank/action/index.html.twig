@@ -1,0 +1,38 @@
+{% extends "admin/base.html.twig" %}
+
+{% block title %}Rank actions{% endblock %}
+
+{% block body %}
+    <div>
+        <h1 class="float-left">Rank actions</h1>
+        <a class="btn btn-primary float-right" href="{{ path('admin_rank_action_new') }}" role="button">Add rank action</a>
+    </div>
+
+    <table class="table">
+        <thead class="thead-light">
+        <tr>
+            <th>{{ knp_pagination_sortable(rankActions, 'Rank action name', 'rankActions.rank_action_name') }}</th>
+            <th>Rank action score</th>
+            <th>Rank action description</th>
+            <th>Rank action message</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for rankAction in rankActions %}
+            <tr>
+                <td><a class="badge badge-info" href="{{ path('admin_rank_action_edit', {'action' : rankAction.rankActionName}) }}">{{ rankAction.rankActionName }}</a></td>
+                <td><span class="badge badge-success">{{ rankAction.rankActionScore }}</span></td>
+                <td>{{ rankAction.rankActionDescription }}</td>
+                <td>{{ rankAction.rankActionMessage }}</td>
+
+                <td><a href="{{ path('admin_rank_action_delete', {'action' : rankAction.rankActionName}) }}">Delete</a></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="navigation">
+        {{ knp_pagination_render(rankActions) }}
+    </div>
+{% endblock %}
