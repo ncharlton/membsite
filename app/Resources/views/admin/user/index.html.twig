@@ -10,7 +10,6 @@
                 <th>Superior Role</th>
                 <th>Activated</th>
                 <th>{{ knp_pagination_sortable(users, 'Username', 'users.username') }}</th>
-                <th>Rank</th>
                 <th>Type</th>
                 <th>Twitch ID</th>
                 <th>Twitch Sub Plan</th>
@@ -53,7 +52,6 @@
                     </td>
                     <td><a href="{{ path("admin_user_view", {'user' : user.username}) }}">{{ user.username }}</a></td>
 
-                    <td>{{ user.rank.rankName }}</td>
                     <td>{{ user.type }}</td>
                     <td>{{ user.tid }}</td>
                     <td>{{ user.profile.profileSubplan }}</td>

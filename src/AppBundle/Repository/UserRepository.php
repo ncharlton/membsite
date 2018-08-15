@@ -36,7 +36,6 @@ class UserRepository extends EntityRepository
         return $this->createQueryBuilder("user")
             ->select("user.username, user.user_id, user.score, profile, rank,")
             ->innerJoin("user.profile", "profile")
-            ->innerJoin("user.rank", "rank")
             ->where("user.user_id = :id")
             ->setParameter(":id", $id)
             ->setMaxResults(1)

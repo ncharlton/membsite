@@ -50,18 +50,6 @@ class User implements UserInterface
      */
     protected $comments;
 
-
-    /**
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Rank")
-     * @ORM\JoinColumn(name="rank", referencedColumnName="rank_id")
-     */
-    private $rank;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $score;
-
     /**
      * @ORM\Column(type="integer")
      */
@@ -163,22 +151,6 @@ class User implements UserInterface
     public function setLastActive($last_active): void
     {
         $this->last_active = $last_active;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getScore()
-    {
-        return $this->score;
-    }
-
-    /**
-     * @param mixed $score
-     */
-    public function setScore($score): void
-    {
-        $this->score = $score;
     }
 
     /**
@@ -390,22 +362,6 @@ class User implements UserInterface
             $this->profile = new Profile();
         } else
             $this->profile = $profile;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getRank()
-    {
-        return $this->rank;
-    }
-
-    /**
-     * @param mixed $rank
-     */
-    public function setRank(Rank $rank): void
-    {
-        $this->rank = $rank;
     }
 
 
